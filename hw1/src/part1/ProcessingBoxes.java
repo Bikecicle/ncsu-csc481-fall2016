@@ -38,11 +38,11 @@ public class ProcessingBoxes extends PApplet {
 
 	public void draw() {
 		background(255);
+		player.updateYPosition(boxes);
+		player.updateXPosition(boxes);
 		for (Box box : boxes) {
 			renderBox(box);
 		}
-		player.updateYPosition(boxes);
-		player.updateXPosition(boxes);
 		renderBox(player);
 	}
 
