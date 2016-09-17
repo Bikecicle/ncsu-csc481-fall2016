@@ -49,8 +49,9 @@ public class ProcessingBoxes extends PApplet {
 	public void keyPressed() {
 
 		if (key == CODED) {
-			if (keyCode == UP && !player.isJumping) {
+			if (keyCode == UP && !player.isJumping && player.hasLanded) {
 				player.isJumping = true;
+				player.hasLanded = false;
 				player.vely += -20;
 			} else if (keyCode == LEFT) {
 				player.velx = -moveSpeed;

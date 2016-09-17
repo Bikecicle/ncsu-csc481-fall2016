@@ -10,12 +10,14 @@ public class DynamicBox extends Box {
 	public float velx;
 	public float vely;
 	public boolean isJumping;
+	public boolean hasLanded;
 
 	public DynamicBox(int posx, int posy, int width, int height, int[] color) {
 		super(posx, posy, width, height, color);
 		this.velx = 0;
 		this.vely = 0;
 		this.isJumping = false;
+		this.hasLanded = false;
 	}
 
 	public boolean isColliding(List<Box> environment) {
@@ -26,9 +28,8 @@ public class DynamicBox extends Box {
 				return true;
 		}
 		// Boundaries
-		if (this.posx < 0 || this.posx + this.width > 700 || this.posy < 0 || this.posy + this.height > 700) {
+		if (this.posx < 0 || this.posx + this.width > 700 || this.posy < 0 || this.posy + this.height > 700)
 			return true;
-		}
 
 		return false;
 
@@ -40,6 +41,7 @@ public class DynamicBox extends Box {
 		if (isColliding(environment)) {
 			posy -= vely;
 			vely *= bounce;
+			hasLanded = true;
 		}
 		if (Math.abs(vely) < 1) {
 			vely = 0;
@@ -51,6 +53,7 @@ public class DynamicBox extends Box {
 		if (isColliding(environment)) {
 			posx -= velx;
 			velx *= bounce;
+			hasLanded = true;
 		}
 		if (Math.abs(velx) < 1) {
 			velx = 0;
