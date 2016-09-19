@@ -13,7 +13,7 @@ package part2;
  * 
  * - Removing synchronized status from the second synchronized block causes
  * a IllegalMonitorStateException and completely unpredictable behavior in the
- * other two
+ * other two threads (sometimes don't finish)
  * 
  * @author Griffin
  *
