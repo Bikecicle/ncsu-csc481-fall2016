@@ -6,39 +6,41 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import event.EventManager;
+import util.EngineConstants;
+
 public class ServerSocketListener implements Runnable {
 
-	private boolean isRunning;
-	private ConcurrentLinkedQueue<Socket> connections;
-	private int count;
+	private ConcurrentLinkedQueue<ConnectedClient> clients;
 	private ServerSocket serverSocket = null;
-	private int port;
+	private EventManager eventManager;
+	private int count;
+	private boolean stopped;
 
-	public ServerSocketListener(int port, ConcurrentLinkedQueue<Socket> clientSockets) {
-		this.port = port;
-		this.connections = clientSockets;
-		this.isRunning = true;
+	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager) {
+		this.clients = clients;
+		this.eventManager = eventManager;
+		this.stopped = false;
 		this.count = 0;
+		System.out.println("ServerSocket established on localhost:" + EngineConstants.PORT);
+
 	}
 
 	public void run() {
 
 		try {
-			// Open serverSocket
-			serverSocket = new ServerSocket(port);
-			System.out.println("[ICH] ServerSocket established on localhost:" + port);
-			while (isRunning) {
-				System.out.println("[ICH] Waiting for clients to connect...");
-				Socket socket = null;
-				socket = serverSocket.accept();
-				connections.add(socket);
+			serverSocket = new ServerSocket(EngineConstants.PORT);
+			while (!stopped) {
+				System.out.println("Waiting for clients to connect...");
+				Socket socket = serverSocket.accept();
 				count++;
-				OutputStream out = socket.getOutputStream();
-				out.write(count);
-				System.out.println("[ICH] New connection established: client " + count);
+				ConnectedClient client = new ConnectedClient(socket, count, eventManager);
+				new Thread(client.getIn()).start();
+				new Thread(client.getOut()).start();
+				client.setStopped(false);
+				clients.add(client);
+				System.out.println("New connection established: client " + count);
 			}
-
-			// Close serverSocket
 			serverSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -46,7 +48,7 @@ public class ServerSocketListener implements Runnable {
 	}
 
 	public void stop() {
-		isRunning = false;
+		stopped = true;
 	}
 
 }

@@ -1,4 +1,4 @@
-package game_object_model.object;
+package gameobject;
 
 public class MovingPlatform {
 
