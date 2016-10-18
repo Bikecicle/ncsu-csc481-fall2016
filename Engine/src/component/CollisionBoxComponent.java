@@ -33,10 +33,11 @@ public class CollisionBoxComponent implements Component, Driver {
 	@Override
 	public void onEvent(Event event) {
 		MovementComponent mc = ((ObjectMovedEvent) event).getMovementComponent();
-		if (mc != null && (position.getX() < mc.getPosition().getX() + mc.getHitbox().getWidth()
-				&& mc.getPosition().getX() < position.getX() + this.width
-				&& position.getY() < mc.getPosition().getY() + mc.getHitbox().getHeight()
-				&& mc.getPosition().getY() < position.getY() + this.height) == true) {
+		if (mc != null && (position.getX() - width / 2 < mc.getPosition().getX() + mc.getHitbox().getWidth() / 2
+				&& mc.getPosition().getX() - mc.getHitbox().getWidth() / 2 < position.getX() + width / 2
+				&& position.getY() - height / 2 < mc.getPosition().getY() + mc.getHitbox().getHeight() / 2
+				&& mc.getPosition().getY() - mc.getHitbox().getHeight() / 2 < position.getY()
+						+ this.height / 2) == true) {
 			eventManager.raise(new CollisionEvent(mc, this));
 		}
 	}
@@ -53,6 +54,14 @@ public class CollisionBoxComponent implements Component, Driver {
 
 	public int getHeight() {
 		return height;
+	}
+	
+	public WorldPositionComponent getPosition() {
+		return position;
+	}
+
+	public boolean isMoveable() {
+		return moveable;
 	}
 
 }

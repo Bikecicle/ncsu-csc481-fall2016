@@ -3,6 +3,7 @@ package gameobject;
 import component.CollisionBoxComponent;
 import component.MovementComponent;
 import component.PhysicsComponent;
+import component.GravityComponent;
 import component.PlayerControlComponent;
 import component.ColoredRectangleComponent;
 import component.WorldPositionComponent;
@@ -19,14 +20,15 @@ public class Player extends GameObject {
 		CollisionBoxComponent hitbox = new CollisionBoxComponent(eventManager, position, EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT, true);
 		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(sceneManager, eventManager, position, EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT);
 		PlayerControlComponent input = new PlayerControlComponent(eventManager, hitbox, playerId);
-		PhysicsComponent physics = new PhysicsComponent(eventManager);
-		MovementComponent movement = new MovementComponent(eventManager, position, hitbox, physics, input);
+		GravityComponent gravity = new GravityComponent();
+		MovementComponent movement = new MovementComponent(eventManager, position, hitbox, gravity, input);
+		PhysicsComponent physics = new PhysicsComponent(eventManager, movement);
 			
 				
 		addComponent(position);
 		addComponent(hitbox);
 		addComponent(renderShape);
-		addComponent(physics);
+		addComponent(gravity);
 		addComponent(input);
 		addComponent(movement);
 	}
