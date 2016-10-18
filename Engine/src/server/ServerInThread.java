@@ -32,7 +32,7 @@ public class ServerInThread implements Runnable {
 				} else {
 					eventManager.raise(new KeyReleasedEvent(input.getKey()));
 				}
-				System.out.println("Key Event: " + input.getKey() + " by client " );
+				//System.out.println("Key Event: " + input.getKey() + " by client " + id + " - pressed = " + input.getPressed());
 			}
 			stream.close();
 		} catch (ClassNotFoundException | IOException e) {

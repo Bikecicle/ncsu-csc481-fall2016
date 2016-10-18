@@ -5,8 +5,8 @@ public class Event {
 	int type;
 	int priority;
 	
-	public Event(String type, int priority) {
-		this.type = type.hashCode();
+	public Event(int type, int priority) {
+		this.type = type;
 	}
 	
 	public int getType() {
@@ -20,6 +20,10 @@ public class Event {
 	public void promote() {
 		if (priority > 0)
 			priority--;
+	}
+	
+	public String toString() {
+		return Integer.toString(type);
 	}
 	
 }

@@ -24,6 +24,13 @@ public class PressedKeyMap {
 	}
 	
 	public void release(int key){
+		if (!map.containsKey(key)) {
+			map.put(key, false);
+		}
 		map.replace(key, false);
+	}
+	
+	public boolean pressed(int key){
+		return map.get(key);
 	}
 }

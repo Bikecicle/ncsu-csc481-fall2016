@@ -1,13 +1,13 @@
 package event;
 
-import util.EngineConstants;
+import util.EConstant;
 
 public class KeyReleasedEvent extends Event {
 
 	private int key;
 
 	public KeyReleasedEvent(int key) {
-		super("KeyReleased", EngineConstants.PRIORITY_LOW);
+		super(EConstant.KEY_RELEASED_EVENT, EConstant.PRIORITY_LOW);
 		this.key = key;
 	}
 

@@ -1,16 +1,19 @@
 package gameobject;
 
-import gameobjectcomponent.CollisionBoxComponent;
-import gameobjectcomponent.RectangleProfileComponent;
-import gameobjectcomponent.WorldPositionComponent;
+import component.CollisionBoxComponent;
+import component.ColoredRectangleComponent;
+import component.WorldPositionComponent;
+import event.EventManager;
+import rendering.Scene;
+import rendering.SceneManager;
 
 public class Platform extends GameObject {
 
-	public Platform( World world, int x, int y, int width, int height ) {
-		super(world);
+	public Platform( SceneManager sceneManager, EventManager eventManager, int x, int y, int width, int height ) {
+		super();
 		WorldPositionComponent position = new WorldPositionComponent(x, y);
-		CollisionBoxComponent hitBox = new CollisionBoxComponent(position, width, height);
-		RectangleProfileComponent renderShape = new RectangleProfileComponent(position, width, height);
+		CollisionBoxComponent hitBox = new CollisionBoxComponent(eventManager, position, width, height, false);
+		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(sceneManager, eventManager, position, width, height);
 		
 		addComponent(position);
 		addComponent(hitBox);

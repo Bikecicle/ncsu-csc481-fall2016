@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
-import gameobjectcomponent.Component;
+
+import component.Component;
 
 public class EventManager {
 
@@ -22,17 +23,20 @@ public class EventManager {
 		});
 	}
 
-	public void register(int eventType, Component handler) {
+	public synchronized void register(int eventType, Component handler) {
 		List<Component> handlers = registeredMap.get(eventType);
 		if (handlers == null) {
 			handlers = new LinkedList<Component>();
 			registeredMap.put(eventType, handlers);
 		}
 		handlers.add(handler);
+		System.out.println("Component registered as handler for event type: " + eventType );
 	}
 
 	public synchronized void raise(Event event) {
 		eventQueue.add(event);
+		//System.out.println("Event Added...");
+		//System.out.println(eventQueue.toString());
 	}
 
 	public synchronized void handle() {
@@ -42,13 +46,24 @@ public class EventManager {
 			if (handlers != null) {
 				for (Component handler : handlers) {
 					handler.onEvent(event);
-
 				}
 			}
+			//System.out.println("Event Handled...");
+			//System.out.println(eventQueue.toString());
+		}
+	}
+	
+	public void handleAll() {
+		while (hasEvents()) {
+			handle();
 		}
 	}
 
 	public boolean hasEvents() {
-		return eventQueue.isEmpty();
+		return !eventQueue.isEmpty();
+	}
+	
+	public String toString() {
+		return registeredMap.toString();
 	}
 }

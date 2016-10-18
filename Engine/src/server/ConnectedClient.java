@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
+import rendering.Scene;
+import rendering.SceneManager;
 
 public class ConnectedClient {
 
@@ -35,11 +38,11 @@ public class ConnectedClient {
 		this.stopped = stopped;
 	}
 
-	public ConnectedClient(Socket socket, int id, EventManager eventManager) {
+	public ConnectedClient(Socket socket, int id, EventManager eventManager, SceneManager sceneManager) {
 		try {
 			this.socket = socket;
 			this.in = new ServerInThread(new ObjectInputStream(socket.getInputStream()), eventManager, id);
-			this.out = new ServerOutThread(new ObjectOutputStream(socket.getOutputStream()));
+			this.out = new ServerOutThread(new ObjectOutputStream(socket.getOutputStream()), sceneManager);
 			this.id = id;
 			this.stopped = true;
 		} catch (IOException e) {

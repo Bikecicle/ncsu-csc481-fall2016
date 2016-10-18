@@ -10,4 +10,14 @@ public class World {
 	public World(){
 		worldObjects = new LinkedList<GameObject>();
 	}
+
+	public synchronized void buildGameObject(GameObject gameObject) {
+		worldObjects.add(gameObject);
+	}
+
+	public synchronized void update() {
+		for (GameObject object : worldObjects) {
+			object.update();
+		}
+	}
 }

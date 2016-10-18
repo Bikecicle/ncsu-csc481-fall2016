@@ -1,17 +1,33 @@
 package client;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import rendering.Scene;
 
 public class ClientInThread implements Runnable {
 
-	public ClientInThread(ObjectInputStream objectInputStream) {
-		// TODO Auto-generated constructor stub
+	private ObjectInputStream stream;
+	private boolean stopped;
+
+	public ClientInThread(ObjectInputStream stream) {
+		this.stream = stream;
+		this.stopped = false;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		while (!stopped) {
+			try {
+				EngineClient.scene = (Scene) stream.readObject();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void stop() {
+		stopped = true;
 	}
 
 }

@@ -1,4 +1,4 @@
-package gameobjectcomponent;
+package component;
 
 import event.Event;
 import event.EventManager;
@@ -6,8 +6,6 @@ import event.EventManager;
 public interface Component {
 	
 	public void update();
-	
-	public void register(EventManager em);
 	
 	public void onEvent(Event event);
 	
