@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import event.EventManager;
-import rendering.Scene;
 import rendering.SceneManager;
 
 public class ConnectedClient {

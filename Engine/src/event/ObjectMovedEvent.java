@@ -5,7 +5,7 @@ import util.EConstant;
 
 public class ObjectMovedEvent extends Event {
 	
-	MovementComponent movementComponent;
+	private MovementComponent movementComponent;
 
 	public ObjectMovedEvent( MovementComponent movementComponent ) {
 		super(EConstant.OBJECT_MOVED_EVENT, EConstant.PRIORITY_MEDIUM);

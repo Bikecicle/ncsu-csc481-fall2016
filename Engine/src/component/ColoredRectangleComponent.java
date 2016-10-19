@@ -2,9 +2,7 @@ package component;
 
 import event.Event;
 import event.EventManager;
-import event.RenderEvent;
 import rendering.ColoredRect;
-import rendering.Scene;
 import rendering.SceneManager;
 import util.EConstant;
 
@@ -13,12 +11,13 @@ public class ColoredRectangleComponent implements Component {
 	private SceneManager sceneManager;
 	private EventManager eventManager;
 	private WorldPositionComponent position;
-	private int width;
-	private int height;
+	private double width;
+	private double height;
 	private boolean rendered;
 
-	public ColoredRectangleComponent(SceneManager sceneManager, EventManager eventManager, WorldPositionComponent position, int width,
-			int height) {
+	public ColoredRectangleComponent(SceneManager sceneManager, EventManager eventManager,
+			WorldPositionComponent position, double width,
+			double height) {
 		this.sceneManager = sceneManager;
 		this.eventManager = eventManager;
 		this.position = position;

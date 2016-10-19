@@ -3,6 +3,8 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import javax.swing.plaf.synth.SynthSplitPaneUI;
+
 import rendering.Scene;
 
 public class ClientInThread implements Runnable {
@@ -21,7 +23,8 @@ public class ClientInThread implements Runnable {
 			try {
 				EngineClient.scene = (Scene) stream.readObject();
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
+				System.out.println("Connection to server lost");
+				stop();
 			}
 		}
 	}

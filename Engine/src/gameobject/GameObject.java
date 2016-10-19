@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import component.Component;
-import event.EventManager;
 
 public abstract class GameObject {
 

@@ -15,7 +15,8 @@ public class PlayerControlComponent implements Component, Driver {
 	private boolean jumping;
 	private int playerId;
 
-	public PlayerControlComponent(EventManager eventManager, CollisionBoxComponent collisionBoxComponent, int playerId) {
+	public PlayerControlComponent(EventManager eventManager, CollisionBoxComponent collisionBoxComponent,
+			int playerId) {
 		this.map = new PressedKeyMap();
 		this.playerId = playerId;
 		this.collisionBoxComponent = collisionBoxComponent;
@@ -37,12 +38,13 @@ public class PlayerControlComponent implements Component, Driver {
 
 	@Override
 	public void onEvent(Event event) {
-		if (event.getType() == EConstant.KEY_PRESSED_EVENT) {
+		if (event.getType() == EConstant.KEY_PRESSED_EVENT && ((KeyPressedEvent) event).getId() == playerId) {
 			map.press(((KeyPressedEvent) event).getKey());
-		} else if (event.getType() == EConstant.KEY_RELEASED_EVENT) {
+		} else if (event.getType() == EConstant.KEY_RELEASED_EVENT && ((KeyReleasedEvent) event).getId() == playerId) {
 			map.release(((KeyReleasedEvent) event).getKey());
-		} else if (event.getType() == EConstant.COLLISION_EVENT) {
-			if (((CollisionEvent) event).getCollisionBoxComponent() == collisionBoxComponent) {
+		} else if (event.getType() == EConstant.COLLISION_EVENT
+				&& ((CollisionEvent) event).getHitbox1() == this.collisionBoxComponent) {
+			if (!((CollisionEvent) event).isCollidingFromBelow()) {
 				jumping = false;
 			}
 		}
@@ -52,16 +54,16 @@ public class PlayerControlComponent implements Component, Driver {
 	public void drive(MovementComponent motion) {
 		if (map.pressed(EConstant.KEY_UP)) {
 			if (!jumping) {
-				motion.setVelocityY(EConstant.PLAYER_JUMP_VELOCITY);
+				motion.setVelocityY(motion.getVelocityY() + EConstant.PLAYER_JUMP_VELOCITY);
 				jumping = true;
 			}
 		} else if (map.pressed(EConstant.KEY_LEFT)) {
-			if (motion.getVelocityX() < EConstant.PLAYER_MAX_VELOCITY) {
-				motion.setVelocityX(motion.getVelocityX() + EConstant.PLAYER_ACCELERATION * motion.getDt());
-			}
-		} else if (map.pressed(EConstant.KEY_RIGHT)) {
 			if (motion.getVelocityX() > -EConstant.PLAYER_MAX_VELOCITY) {
 				motion.setVelocityX(motion.getVelocityX() - EConstant.PLAYER_ACCELERATION * motion.getDt());
+			}
+		} else if (map.pressed(EConstant.KEY_RIGHT)) {
+			if (motion.getVelocityX() < EConstant.PLAYER_MAX_VELOCITY) {
+				motion.setVelocityX(motion.getVelocityX() + EConstant.PLAYER_ACCELERATION * motion.getDt());
 			}
 		}
 	}

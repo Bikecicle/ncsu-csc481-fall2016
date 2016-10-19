@@ -28,9 +28,9 @@ public class ServerInThread implements Runnable {
 			while (!stopped) {
 				KeyInput input = (KeyInput) stream.readObject();
 				if (input.getPressed()) {
-					eventManager.raise(new KeyPressedEvent(input.getKey()));
+					eventManager.raise(new KeyPressedEvent(input.getKey(), id));
 				} else {
-					eventManager.raise(new KeyReleasedEvent(input.getKey()));
+					eventManager.raise(new KeyReleasedEvent(input.getKey(), id));
 				}
 				//System.out.println("Key Event: " + input.getKey() + " by client " + id + " - pressed = " + input.getPressed());
 			}

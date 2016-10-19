@@ -4,8 +4,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
 import event.RenderEvent;
+import gameobject.DeathZone;
+import gameobject.MovingPlatform;
 import gameobject.Platform;
 import gameobject.Player;
+import gameobject.SpawnPoint;
 import gameobject.World;
 import rendering.SceneManager;
 import util.EConstant;
@@ -26,14 +29,14 @@ public class EngineServer {
 		this.sceneManager = new SceneManager();
 		this.stopped = false;
 
-		this.newConnectionListener = new ServerSocketListener(clients, eventManager, sceneManager);
+		this.newConnectionListener = new ServerSocketListener(clients, eventManager, sceneManager, world);
 		new Thread(newConnectionListener).start();
 	}
 
 	public World getWorld() {
 		return world;
 	}
-	
+
 	public boolean getStopped() {
 		return stopped;
 	}
@@ -60,9 +63,19 @@ public class EngineServer {
 	}
 
 	private void initializeWorld() {
-		world.buildGameObject(new Player(sceneManager, eventManager, 1));
 		world.buildGameObject(new Platform(sceneManager, eventManager, 50, 10, 50, 10));
-		//world.buildGameObject(new SpawnPoint(world, eventManager, 50, 50));
+		world.buildGameObject(new Platform(sceneManager, eventManager, 20, 80, 20, 20));
+		world.buildGameObject(new Platform(sceneManager, eventManager, 30, 30, 30, 5));
+		world.buildGameObject(new Platform(sceneManager, eventManager, 80, 40, 10, 30));
+		world.buildGameObject(new Platform(sceneManager, eventManager, 30, 20, 10, 20));
+		world.buildGameObject(new MovingPlatform(sceneManager, eventManager, 50, 50, 30, 10));
+
+		world.buildGameObject(new DeathZone(eventManager, -5, 50, 10, 100));
+		world.buildGameObject(new DeathZone(eventManager, 105, 50, 10, 100));
+		world.buildGameObject(new DeathZone(eventManager, 50, -5, 100, 10));
+		
+		world.buildGameObject(new SpawnPoint(eventManager, 30, 50));
+		
 		System.out.println("Registered handlers: " + eventManager.toString());
 	}
 

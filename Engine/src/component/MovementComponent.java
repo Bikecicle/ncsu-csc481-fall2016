@@ -14,7 +14,8 @@ public class MovementComponent implements Component {
 	private long previousTimestamp;
 	private double dt;
 
-	public MovementComponent(EventManager eventManager, WorldPositionComponent position, CollisionBoxComponent hitbox, Driver... drivers) {
+	public MovementComponent(EventManager eventManager, WorldPositionComponent position, CollisionBoxComponent hitbox,
+			Driver... drivers) {
 		this.eventManager = eventManager;
 		this.position = position;
 		this.hitbox = hitbox;
@@ -24,6 +25,7 @@ public class MovementComponent implements Component {
 
 	@Override
 	public void update() {
+		// System.out.println(position);
 		long timestamp = System.nanoTime();
 		dt = (timestamp - previousTimestamp) / 1000000000.0;
 		previousTimestamp = timestamp;
@@ -34,8 +36,7 @@ public class MovementComponent implements Component {
 		velocityY += accelerationY * dt;
 		position.setPositionX(position.getX() + velocityX * dt);
 		position.setPositionY(position.getY() + velocityY * dt);
-		if (Math.abs(velocityX) >= 0.001 && Math.abs(velocityY) >= 0.001)
-			eventManager.raise(new ObjectMovedEvent(this));
+		eventManager.raise(new ObjectMovedEvent(this));
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class MovementComponent implements Component {
 	public double getDt() {
 		return dt;
 	}
-	
+
 	public CollisionBoxComponent getHitbox() {
 		return hitbox;
 	}

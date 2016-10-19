@@ -1,13 +1,12 @@
 package component;
 
 import event.Event;
-import event.EventManager;
 
 public class WorldPositionComponent implements Component {
 	private double positionX;
 	private double positionY;
 
-	public WorldPositionComponent(int positionX, int positionY) {
+	public WorldPositionComponent(double positionX, double positionY) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 	}
@@ -42,7 +41,16 @@ public class WorldPositionComponent implements Component {
 	public void setPositionY(double positionY) {
 		this.positionY = positionY;
 	}
-
 	
-
+	public void moveX( double dx){
+		this.positionX += dx;
+	}
+	
+	public void moveY( double dy){
+		this.positionY += dy;
+	}
+	
+	public String toString() {
+		return "x: " + positionX + " y: " + positionY;
+	}
 }

@@ -21,7 +21,7 @@ public class GravityComponent implements Component, Driver {
 
 	@Override
 	public void drive(MovementComponent movementComponent) {
-		movementComponent.setVelocityY(movementComponent.getVelocityY() + EConstant.GRAVITY);
+		movementComponent.setVelocityY(movementComponent.getVelocityY() + EConstant.GRAVITY * movementComponent.getDt());
 	}
 
 }

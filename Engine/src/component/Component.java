@@ -1,7 +1,6 @@
 package component;
 
 import event.Event;
-import event.EventManager;
 
 public interface Component {
 	
