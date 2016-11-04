@@ -15,7 +15,8 @@ public class CollisionBoxComponent implements Component, Driver {
 	private boolean solid;
 	private boolean moveable;
 
-	public CollisionBoxComponent(EventManager eventManager, WorldPositionComponent position, double width, double height, boolean solid, boolean moveable) {
+	public CollisionBoxComponent(EventManager eventManager, WorldPositionComponent position, double width,
+			double height, boolean solid, boolean moveable) {
 		this.eventManager = eventManager;
 		this.position = position;
 		this.width = width;
@@ -34,30 +35,31 @@ public class CollisionBoxComponent implements Component, Driver {
 	@Override
 	public void onEvent(Event event) {
 		MovementComponent mc = ((ObjectMovedEvent) event).getMovementComponent();
-		if (mc != null && mc.getHitbox() != this && (position.getX() - width / 2 < mc.getPosition().getX() + mc.getHitbox().getWidth() / 2
-				&& mc.getPosition().getX() - mc.getHitbox().getWidth() / 2 < position.getX() + width / 2
-				&& position.getY() - height / 2 < mc.getPosition().getY() + mc.getHitbox().getHeight() / 2
-				&& mc.getPosition().getY() - mc.getHitbox().getHeight() / 2 < position.getY()
-						+ this.height / 2) == true) {
-			double overlapX;
-			double overlapY;
-			if (mc.getVelocityX() >= 0) {
-				overlapX = (mc.getPosition().getX() + mc.getHitbox().getWidth() / 2)
-						- (position.getX() - width / 2);
-			} else {
-				overlapX = (mc.getPosition().getX() - mc.getHitbox().getWidth() / 2)
-						- (position.getX() + width / 2);
+		if (mc != null && mc.getHitbox() != this) {
+			if (position.getX() - width / 2 < mc.getPosition().getX() + mc.getHitbox().getWidth() / 2
+					&& mc.getPosition().getX() - mc.getHitbox().getWidth() / 2 < position.getX() + width / 2
+					&& position.getY() - height / 2 < mc.getPosition().getY() + mc.getHitbox().getHeight() / 2
+					&& mc.getPosition().getY() - mc.getHitbox().getHeight() / 2 < position.getY() + this.height / 2) {
+				double overlapX;
+				double overlapY;
+				if (mc.getVelocityX() >= 0) {
+					overlapX = (mc.getPosition().getX() + mc.getHitbox().getWidth() / 2)
+							- (position.getX() - width / 2);
+				} else {
+					overlapX = (mc.getPosition().getX() - mc.getHitbox().getWidth() / 2)
+							- (position.getX() + width / 2);
 
-			}
-			if (mc.getVelocityY() >= 0) {
-				overlapY = (mc.getPosition().getY() + mc.getHitbox().getHeight() / 2)
-						- (position.getY() - height / 2);
-			} else {
-				overlapY = (mc.getPosition().getY() - mc.getHitbox().getHeight() / 2)
-						- (position.getY() + height / 2);
+				}
+				if (mc.getVelocityY() >= 0) {
+					overlapY = (mc.getPosition().getY() + mc.getHitbox().getHeight() / 2)
+							- (position.getY() - height / 2);
+				} else {
+					overlapY = (mc.getPosition().getY() - mc.getHitbox().getHeight() / 2)
+							- (position.getY() + height / 2);
 
+				}
+				eventManager.raise(new CollisionEvent(mc.getHitbox(), this, overlapX, overlapY));
 			}
-			eventManager.raise(new CollisionEvent(mc.getHitbox(), this, overlapX, overlapY));
 		}
 	}
 
@@ -74,7 +76,7 @@ public class CollisionBoxComponent implements Component, Driver {
 	public double getHeight() {
 		return height;
 	}
-	
+
 	public WorldPositionComponent getPosition() {
 		return position;
 	}
@@ -82,7 +84,7 @@ public class CollisionBoxComponent implements Component, Driver {
 	public boolean isSolid() {
 		return solid;
 	}
-	
+
 	public boolean isMoveable() {
 		return moveable;
 	}

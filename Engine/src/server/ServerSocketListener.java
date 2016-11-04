@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
-import gameobject.Player;
+import gameobject.Character;
 import gameobject.World;
 import rendering.SceneManager;
 import util.EConstant;
@@ -46,7 +46,7 @@ public class ServerSocketListener implements Runnable {
 				client.setStopped(false);
 				clients.add(client);
 				System.out.println("New connection established: client " + count);
-				world.buildGameObject(new Player(sceneManager, eventManager, count));
+				world.buildGameObject(new Character(sceneManager, eventManager, count));
 			}
 			serverSocket.close();
 		} catch (IOException e) {

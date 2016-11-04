@@ -39,7 +39,7 @@ public class EConstant {
 	public static final double PLAYER_MAX_VELOCITY = 50;
 	public static final double GRAVITY = -100;
 	public static final double COLLISION_ELASTICITY_COEFFICIENT = 0.5;
-	public static final double FRICTION_COEFFICIENT = 0.9999;
+	public static final double FRICTION_COEFFICIENT = 0.0001;
 
 	public static final int WINDOW_WIDTH = 600;
 	public static final int WINDOW_HEIGHT = 600;

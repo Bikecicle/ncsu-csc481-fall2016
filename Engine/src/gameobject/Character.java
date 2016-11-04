@@ -12,9 +12,9 @@ import event.EventManager;
 import rendering.SceneManager;
 import util.EConstant;
 
-public class Player extends GameObject {
+public class Character extends GameObject {
 
-	public Player(SceneManager sceneManager, EventManager eventManager, int playerId) {
+	public Character(SceneManager sceneManager, EventManager eventManager, int playerId) {
 		super();
 		WorldPositionComponent position = new WorldPositionComponent();
 		CollisionBoxComponent hitbox = new CollisionBoxComponent(eventManager, position, EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT, true, true);

@@ -7,11 +7,9 @@ import util.EConstant;
 
 public class SpawnPointComponent implements Component {
 
-	private EventManager eventManager;
 	private WorldPositionComponent position;
 
 	public SpawnPointComponent(EventManager eventManager, WorldPositionComponent position) {
-		this.eventManager = eventManager;
 		this.position = position;
 
 		eventManager.register(EConstant.RESPAWN_EVENT, this);

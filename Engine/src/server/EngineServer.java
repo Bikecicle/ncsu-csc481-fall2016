@@ -7,7 +7,6 @@ import event.RenderEvent;
 import gameobject.DeathZone;
 import gameobject.MovingPlatform;
 import gameobject.Platform;
-import gameobject.Player;
 import gameobject.SpawnPoint;
 import gameobject.World;
 import rendering.SceneManager;

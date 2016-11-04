@@ -9,7 +9,6 @@ import util.EConstant;
 public class ColoredRectangleComponent implements Component {
 
 	private SceneManager sceneManager;
-	private EventManager eventManager;
 	private WorldPositionComponent position;
 	private double width;
 	private double height;
@@ -19,7 +18,6 @@ public class ColoredRectangleComponent implements Component {
 			WorldPositionComponent position, double width,
 			double height) {
 		this.sceneManager = sceneManager;
-		this.eventManager = eventManager;
 		this.position = position;
 		this.width = width;
 		this.height = height;
