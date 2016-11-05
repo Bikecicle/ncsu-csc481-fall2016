@@ -4,6 +4,7 @@ public class Event {
 	
 	int type;
 	int priority;
+	long timestamp;
 	
 	public Event(int type, int priority) {
 		this.type = type;

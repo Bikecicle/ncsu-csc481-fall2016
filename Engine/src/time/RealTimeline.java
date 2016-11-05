@@ -1,8 +1,8 @@
 package time;
 
-public class Realtime extends Timeline {
+public class RealTimeline extends Timeline {
 	
-	public Realtime() {
+	public RealTimeline() {
 		super();
 	}
 	
