@@ -9,7 +9,7 @@ public class MomentumTransferEvent extends Event {
 	private double velocityX, velocityY;
 
 	public MomentumTransferEvent(CollisionBoxComponent hitbox, double velocityX, double velocityY) {
-		super(EConstant.MOMENTUM_TRANSFER_EVENT, EConstant.PRIORITY_HIGH);
+		super(EConstant.MOMENTUM_TRANSFER_EVENT, EConstant.PRIORITY_PHYSICS);
 		this.hitbox = hitbox;
 		this.velocityX = velocityX;
 		this.velocityY = velocityY;

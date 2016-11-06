@@ -7,20 +7,26 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import component.Component;
+import time.Timeline;
 
 public class EventManager {
 
 	private HashMap<Integer, List<Component>> registeredMap;
 	private PriorityQueue<Event> eventQueue;
+	private Timeline gameTime;
 
-	public EventManager() {
+	public EventManager(Timeline gameTime) {
 		this.registeredMap = new HashMap<Integer, List<Component>>();
 		this.eventQueue = new PriorityQueue<Event>(new Comparator<Event>() {
 			@Override
 			public int compare(Event o1, Event o2) {
-				return o1.getPriority() - o2.getPriority();
+				int c = o1.getPriority() - o2.getPriority();
+				if (c == 0)
+					return (int) Math.signum(o2.getTimestamp() - o1.getTimestamp());
+				return c;
 			}
 		});
+		this.gameTime = gameTime;
 	}
 
 	public synchronized void register(int eventType, Component handler) {
@@ -30,12 +36,13 @@ public class EventManager {
 			registeredMap.put(eventType, handlers);
 		}
 		handlers.add(handler);
-		System.out.println("Component registered as handler for event type: " + eventType );
+		//System.out.println("Component registered as handler for event type: " + eventType );
 	}
 
 	public synchronized void raise(Event event) {
+		event.setTimestamp(gameTime.getTime());
 		eventQueue.add(event);
-		//System.out.println("Event Added...");
+		//System.out.println("Event Raised...");
 		//System.out.println(eventQueue.toString());
 	}
 

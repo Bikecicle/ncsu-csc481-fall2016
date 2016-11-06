@@ -9,7 +9,7 @@ public class CollisionEvent extends Event {
 	private double overlapX, overlapY;
 
 	public CollisionEvent(CollisionBoxComponent hitbox1, CollisionBoxComponent hitbox2, double overlapX, double overlapY) {
-		super(EConstant.COLLISION_EVENT, EConstant.PRIORITY_HIGH);
+		super(EConstant.COLLISION_EVENT, EConstant.PRIORITY_PHYSICS);
 		this.hitbox1 = hitbox1;
 		this.hitbox2 = hitbox2;
 		this.overlapX = overlapX;

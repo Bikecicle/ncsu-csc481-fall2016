@@ -10,11 +10,11 @@ public class EConstant {
 	public static final double PLAYER_HEIGHT = 2;
 
 	// Priorities
-	public static final int PRIORITY_HIGHEST = 1;
-	public static final int PRIORITY_HIGH = 2;
-	public static final int PRIORITY_MEDIUM = 3;
-	public static final int PRIORITY_LOW = 4;
-	public static final int PRIORITY_LOWEST = 5;
+	public static final int PRIORITY_INPUT = 1;
+	public static final int PRIORITY_RENDERING = 2;
+	public static final int PRIORITY_GAME_LOGIC = 3;
+	public static final int PRIORITY_PHYSICS = 4;
+	public static final int PRIORITY_MOVEMENT = 5;
 
 	// Event id's
 	public static final int RENDER_EVENT = 1;

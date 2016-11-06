@@ -10,6 +10,8 @@ import gameobject.Platform;
 import gameobject.SpawnPoint;
 import gameobject.World;
 import rendering.SceneManager;
+import time.RealTimeline;
+import time.SoftTimeline;
 import util.EConstant;
 
 public class EngineServer {
@@ -20,6 +22,8 @@ public class EngineServer {
 	private World world;
 	private boolean stopped;
 	private ConcurrentLinkedQueue<ConnectedClient> clients;
+	private RealTimeline realTime;
+	private SoftTimeline gameTime;
 
 	public EngineServer() {
 		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
@@ -30,6 +34,9 @@ public class EngineServer {
 
 		this.newConnectionListener = new ServerSocketListener(clients, eventManager, sceneManager, world);
 		new Thread(newConnectionListener).start();
+		
+		this.realTime = new RealTimeline();
+		this.gameTime = new SoftTimeline(realTime, realTime.getTime(), 1, 1);
 	}
 
 	public World getWorld() {

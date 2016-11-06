@@ -12,7 +12,7 @@ public class Timeline {
 		this.ticSize = ticSize;
 		this.time = 0;
 	}
-	
+
 	public Timeline() {
 		this.anchor = null;
 	}

@@ -9,7 +9,7 @@ public class RespawnEvent extends Event {
 	private boolean spawned;
 
 	public RespawnEvent(WorldPositionComponent position) {
-		super(EConstant.RESPAWN_EVENT, EConstant.PRIORITY_MEDIUM);
+		super(EConstant.RESPAWN_EVENT, EConstant.PRIORITY_GAME_LOGIC);
 		this.position = position;
 		this.spawned = false;
 	}

@@ -7,7 +7,7 @@ public class KeyPressedEvent extends Event {
 	private int key, id;
 
 	public KeyPressedEvent(int key, int id) {
-		super(EConstant.KEY_PRESSED_EVENT, EConstant.PRIORITY_LOW);
+		super(EConstant.KEY_PRESSED_EVENT, EConstant.PRIORITY_INPUT);
 		this.key = key;
 		this.id = id;
 	}

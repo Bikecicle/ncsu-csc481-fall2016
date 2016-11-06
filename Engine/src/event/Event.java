@@ -18,6 +18,14 @@ public class Event {
 		return priority;
 	}
 	
+	public long getTimestamp() {
+		return timestamp;
+	}
+	
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+	
 	public void promote() {
 		if (priority > 0)
 			priority--;
