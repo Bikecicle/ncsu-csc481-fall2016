@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import event.ClientDisconnectEvent;
 import event.EventManager;
 import event.KeyPressedEvent;
 import event.KeyReleasedEvent;
@@ -36,7 +37,7 @@ public class ServerInThread implements Runnable {
 			}
 			stream.close();
 		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+			eventManager.raise(new ClientDisconnectEvent(id));
 		}
 	}
 

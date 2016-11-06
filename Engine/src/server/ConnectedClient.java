@@ -57,4 +57,9 @@ public class ConnectedClient {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public String toString() {
+		return id + ": " + (stopped ? "stopped" : "running");
+	}
 }

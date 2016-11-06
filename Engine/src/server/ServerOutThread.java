@@ -23,7 +23,7 @@ public class ServerOutThread implements Runnable {
 				try {
 					stream.writeObject(sceneManager.read());
 				} catch (IOException e) {
-					e.printStackTrace();
+					stop();
 				}
 			}
 		}

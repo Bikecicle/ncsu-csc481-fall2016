@@ -3,6 +3,7 @@ package component;
 import event.Event;
 import event.EventManager;
 import event.ObjectMovedEvent;
+import util.EConstant;
 
 public class MovementComponent implements Component {
 
@@ -34,6 +35,10 @@ public class MovementComponent implements Component {
 		}
 		velocityX += accelerationX * dt;
 		velocityY += accelerationY * dt;
+		if (Math.abs(velocityX) < EConstant.MINIMUM_VELOCITY)
+			velocityX = 0.0;
+		if (Math.abs(velocityY) < EConstant.MINIMUM_VELOCITY)
+			velocityY = 0.0;
 		position.setPositionX(position.getX() + velocityX * dt);
 		position.setPositionY(position.getY() + velocityY * dt);
 		eventManager.raise(new ObjectMovedEvent(this));

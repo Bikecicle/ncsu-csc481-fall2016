@@ -48,7 +48,6 @@ public class CollisionBoxComponent implements Component, Driver {
 				} else {
 					overlapX = (mc.getPosition().getX() - mc.getHitbox().getWidth() / 2)
 							- (position.getX() + width / 2);
-
 				}
 				if (mc.getVelocityY() >= 0) {
 					overlapY = (mc.getPosition().getY() + mc.getHitbox().getHeight() / 2)
@@ -56,7 +55,6 @@ public class CollisionBoxComponent implements Component, Driver {
 				} else {
 					overlapY = (mc.getPosition().getY() - mc.getHitbox().getHeight() / 2)
 							- (position.getY() + height / 2);
-
 				}
 				eventManager.raise(new CollisionEvent(mc.getHitbox(), this, overlapX, overlapY));
 			}

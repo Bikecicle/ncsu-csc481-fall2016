@@ -1,11 +1,9 @@
 package component;
 
-import event.Event;
+import event.EventHandler;
 
-public interface Component {
+public interface Component extends EventHandler {
 	
 	public void update();
-	
-	public void onEvent(Event event);
 	
 }

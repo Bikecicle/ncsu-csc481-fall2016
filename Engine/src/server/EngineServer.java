@@ -16,27 +16,28 @@ import util.EConstant;
 
 public class EngineServer {
 
-	private ServerSocketListener newConnectionListener;
+	private RealTimeline realTime;
+	private SoftTimeline gameTime;
 	private EventManager eventManager;
 	private SceneManager sceneManager;
 	private World world;
-	private boolean stopped;
+	
 	private ConcurrentLinkedQueue<ConnectedClient> clients;
-	private RealTimeline realTime;
-	private SoftTimeline gameTime;
+	private ServerSocketListener newConnectionListener;
+	private boolean stopped;
+
 
 	public EngineServer() {
-		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
-		this.eventManager = new EventManager();
-		this.world = new World();
-		this.sceneManager = new SceneManager();
-		this.stopped = false;
-
-		this.newConnectionListener = new ServerSocketListener(clients, eventManager, sceneManager, world);
-		new Thread(newConnectionListener).start();
-		
 		this.realTime = new RealTimeline();
 		this.gameTime = new SoftTimeline(realTime, realTime.getTime(), 1, 1);
+		this.eventManager = new EventManager(gameTime);
+		this.sceneManager = new SceneManager();
+		this.world = new World();
+		
+		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
+		this.newConnectionListener = new ServerSocketListener(clients, eventManager, sceneManager, world);
+		new Thread(newConnectionListener).start();
+		this.stopped = false;
 	}
 
 	public World getWorld() {

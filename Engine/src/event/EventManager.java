@@ -6,17 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import component.Component;
 import time.Timeline;
 
 public class EventManager {
 
-	private HashMap<Integer, List<Component>> registeredMap;
+	private HashMap<Integer, List<EventHandler>> registeredMap;
 	private PriorityQueue<Event> eventQueue;
 	private Timeline gameTime;
 
 	public EventManager(Timeline gameTime) {
-		this.registeredMap = new HashMap<Integer, List<Component>>();
+		this.registeredMap = new HashMap<Integer, List<EventHandler>>();
 		this.eventQueue = new PriorityQueue<Event>(new Comparator<Event>() {
 			@Override
 			public int compare(Event o1, Event o2) {
@@ -29,10 +28,10 @@ public class EventManager {
 		this.gameTime = gameTime;
 	}
 
-	public synchronized void register(int eventType, Component handler) {
-		List<Component> handlers = registeredMap.get(eventType);
+	public synchronized void register(int eventType, EventHandler handler) {
+		List<EventHandler> handlers = registeredMap.get(eventType);
 		if (handlers == null) {
-			handlers = new LinkedList<Component>();
+			handlers = new LinkedList<EventHandler>();
 			registeredMap.put(eventType, handlers);
 		}
 		handlers.add(handler);
@@ -49,9 +48,10 @@ public class EventManager {
 	public synchronized void handle() {
 		if (hasEvents()) {
 			Event event = eventQueue.poll();
-			List<Component> handlers = registeredMap.get(event.getType());
+
+			List<EventHandler> handlers = registeredMap.get(event.getType());
 			if (handlers != null) {
-				for (Component handler : handlers) {
+				for (EventHandler handler : handlers) {
 					handler.onEvent(event);
 				}
 			}
