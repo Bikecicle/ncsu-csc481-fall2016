@@ -19,8 +19,8 @@ public class EConstant {
 
 
 	// Event id's
-	public static final int RENDER_EVENT = 1;
-	public static final int UPDATE_PHYSICS_EVENT = 2;
+	public static final int RENDER_COMPONENT_EVENT = 1;
+	public static final int SERVICE_COMPONENT_EVENT = 2;
 	public static final int KEY_PRESSED_EVENT = 3;
 	public static final int KEY_RELEASED_EVENT = 4;
 	public static final int OBJECT_MOVED_EVENT = 5;
@@ -30,6 +30,8 @@ public class EConstant {
 	public static final int RESPAWN_EVENT = 9;
 	public static final int CLIENT_CONNECT_EVENT = 10;
 	public static final int CLIENT_DISCONNECT_EVENT = 11;
+	public static final int RENDER_ALL_EVENT = 12;
+	public static final int SERVICE_ALL_EVENT = 13;
 
 	// Keys
 	public static final int KEY_UP = 38;
@@ -51,5 +53,7 @@ public class EConstant {
 	public static final double WORLD_WIDTH = 100;
 	public static final double WORLD_HEIGHT = 100;
 
-	public static final long GAME_LOOP_DT = 5333333;
+	public static final long NANOSECONDS_IN_SECOND = 1000000000;
+	public static final long FRAME_RATE = 60; // Delta: 16666667
+	public static final long PHYSICS_DELTA = 120; // Delta: 8333333
 }

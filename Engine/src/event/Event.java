@@ -1,13 +1,21 @@
 package event;
 
-public class Event {
-	
+import java.io.Serializable;
+
+public class Event implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5238937547210725759L;
 	int type;
 	int priority;
 	long timestamp;
 	
-	public Event(int type, int priority) {
+	public Event(long timestamp, int type, int priority) {
+		this.timestamp = timestamp;
 		this.type = type;
+		this.priority = priority;
 	}
 	
 	public int getType() {
@@ -22,17 +30,13 @@ public class Event {
 		return timestamp;
 	}
 	
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
-	
 	public void promote() {
 		if (priority > 0)
 			priority--;
 	}
 	
 	public String toString() {
-		return Integer.toString(type);
+		return type + ": " + timestamp;
 	}
 	
 }

@@ -3,7 +3,7 @@ package server;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
-import event.RenderEvent;
+import event.RenderComponentEvent;
 import gameobject.DeathZone;
 import gameobject.MovingPlatform;
 import gameobject.Platform;
@@ -12,28 +12,30 @@ import gameobject.World;
 import rendering.SceneManager;
 import time.RealTimeline;
 import time.SoftTimeline;
+import time.Timeline;
 import util.EConstant;
 
 public class EngineServer {
 
 	private RealTimeline realTime;
 	private SoftTimeline gameTime;
+	private Timeline loopTime;
 	private EventManager eventManager;
 	private SceneManager sceneManager;
 	private World world;
-	
+
 	private ConcurrentLinkedQueue<ConnectedClient> clients;
 	private ServerSocketListener newConnectionListener;
 	private boolean stopped;
 
-
 	public EngineServer() {
 		this.realTime = new RealTimeline();
-		this.gameTime = new SoftTimeline(realTime, realTime.getTime(), 1, 1);
+		this.gameTime = new SoftTimeline(realTime, 1, 1);
+		this.loopTime = new Timeline(gameTime, 1);
 		this.eventManager = new EventManager(gameTime);
 		this.sceneManager = new SceneManager();
 		this.world = new World();
-		
+
 		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
 		this.newConnectionListener = new ServerSocketListener(clients, eventManager, sceneManager, world);
 		new Thread(newConnectionListener).start();
@@ -58,13 +60,26 @@ public class EngineServer {
 			client.stop();
 		}
 	}
+	
+	public void pause() {
+		gameTime.setScale(0);
+	}
+	
+	public void resume() {
+		gameTime.setScale(1);
+	}
 
 	public static void main(String args[]) {
 		EngineServer engineServer = new EngineServer();
 		engineServer.initializeWorld();
 		System.out.println("Game World Initialized...");
 		while (!engineServer.getStopped()) {
-			engineServer.gameIteration();
+			// Main Game Loop 60 Hz
+			engineServer.loopTime.reset();
+			long loopIteration = 1;
+			while (engineServer.loopTime.getTime() < loopIteration) {
+				engineServer.world.update();
+			}
 		}
 		engineServer.stop();
 	}
@@ -80,22 +95,8 @@ public class EngineServer {
 		world.buildGameObject(new DeathZone(eventManager, -5, 50, 10, 100));
 		world.buildGameObject(new DeathZone(eventManager, 105, 50, 10, 100));
 		world.buildGameObject(new DeathZone(eventManager, 50, -5, 100, 10));
-		
-		world.buildGameObject(new SpawnPoint(eventManager, 30, 50));
-		
-		System.out.println("Registered handlers: " + eventManager.toString());
-	}
 
-	private void gameIteration() {
-		long time = System.nanoTime();
-		long end = time + EConstant.GAME_LOOP_DT;
-		sceneManager.pushCurrent();
-		eventManager.raise(new RenderEvent());
-		while (time < end) {
-			world.update();
-			eventManager.handleAll();
-			time = System.nanoTime();
-		}
-		sceneManager.toss();
+		world.buildGameObject(new SpawnPoint(eventManager, 30, 50));
+		System.out.println("Registered handlers: " + eventManager.toString());
 	}
 }

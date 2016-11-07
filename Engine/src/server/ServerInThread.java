@@ -29,15 +29,15 @@ public class ServerInThread implements Runnable {
 			while (!stopped) {
 				KeyInput input = (KeyInput) stream.readObject();
 				if (input.getPressed()) {
-					eventManager.raise(new KeyPressedEvent(input.getKey(), id));
+					eventManager.raise(new KeyPressedEvent(eventManager.getTime(), input.getKey(), id));
 				} else {
-					eventManager.raise(new KeyReleasedEvent(input.getKey(), id));
+					eventManager.raise(new KeyReleasedEvent(eventManager.getTime(), input.getKey(), id));
 				}
 				//System.out.println("Key Event: " + input.getKey() + " by client " + id + " - pressed = " + input.getPressed());
 			}
 			stream.close();
 		} catch (ClassNotFoundException | IOException e) {
-			eventManager.raise(new ClientDisconnectEvent(id));
+			eventManager.raise(new ClientDisconnectEvent(eventManager.getTime(), id));
 		}
 	}
 

@@ -22,5 +22,9 @@ public abstract class GameObject {
 			component.update();
 		}
 	}
+	
+	public boolean contains(Component component) {
+		return components.contains(component);
+	}
 
 }

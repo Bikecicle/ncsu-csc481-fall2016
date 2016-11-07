@@ -44,7 +44,7 @@ public class CollisionPhysicsComponent implements Component {
 									movementComponent.getVelocityX() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
 							movementComponent.setVelocityY(
 									movementComponent.getVelocityY() * EConstant.FRICTION_COEFFICIENT);
-							eventManager.raise(new MomentumTransferEvent(collision.getHitbox2(),
+							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox2(),
 									-movementComponent.getVelocityX(), 0));
 						} else {
 							// y-axis collision
@@ -53,7 +53,7 @@ public class CollisionPhysicsComponent implements Component {
 									movementComponent.getVelocityY() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
 							movementComponent.setVelocityX(
 									movementComponent.getVelocityX() * EConstant.FRICTION_COEFFICIENT);
-							eventManager.raise(new MomentumTransferEvent(collision.getHitbox2(), 0,
+							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox2(), 0,
 									-movementComponent.getVelocityY()));
 						}
 					} else {
@@ -74,7 +74,7 @@ public class CollisionPhysicsComponent implements Component {
 									movementComponent.getVelocityX() * EConstant.FRICTION_COEFFICIENT);
 						}
 					}
-					eventManager.raise(new ObjectMovedEvent(movementComponent));
+					eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), movementComponent));
 				} else {
 					// Pass through (do nothing)
 				}
@@ -88,7 +88,7 @@ public class CollisionPhysicsComponent implements Component {
 								movementComponent.getVelocityX() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
 						movementComponent.setVelocityY(movementComponent.getVelocityY()
 								*  EConstant.FRICTION_COEFFICIENT);
-						eventManager.raise(new MomentumTransferEvent(collision.getHitbox1(),
+						eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox1(),
 								-movementComponent.getVelocityX(), 0));
 					} else {
 						// y-axis collision
@@ -97,7 +97,7 @@ public class CollisionPhysicsComponent implements Component {
 								movementComponent.getVelocityY() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
 						movementComponent.setVelocityX(movementComponent.getVelocityX()
 								* EConstant.FRICTION_COEFFICIENT);
-						eventManager.raise(new MomentumTransferEvent(collision.getHitbox1(), 0,
+						eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox1(), 0,
 								-movementComponent.getVelocityY()));
 					}
 				}

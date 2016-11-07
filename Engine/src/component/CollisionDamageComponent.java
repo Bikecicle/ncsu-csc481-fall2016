@@ -27,7 +27,7 @@ public class CollisionDamageComponent implements Component{
 	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.COLLISION_EVENT && ((CollisionEvent) event).getHitbox2() == hitbox) {
-			eventManager.raise(new ObjectDamageEvent(((CollisionEvent) event).getHitbox1().getPosition()));
+			eventManager.raise(new ObjectDamageEvent(eventManager.getTime(), ((CollisionEvent) event).getHitbox1().getPosition()));
 		}
 	}
 }

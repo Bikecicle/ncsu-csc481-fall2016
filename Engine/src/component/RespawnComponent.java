@@ -27,7 +27,7 @@ public class RespawnComponent implements Component {
 	@Override
 	public void onEvent(Event event) {
 		if (((ObjectDamageEvent) event).getPosition() == position) {
-			eventManager.raise(new RespawnEvent(position));
+			eventManager.raise(new RespawnEvent(eventManager.getTime(), position));
 		}
 	}
 

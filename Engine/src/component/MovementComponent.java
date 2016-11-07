@@ -3,6 +3,7 @@ package component;
 import event.Event;
 import event.EventManager;
 import event.ObjectMovedEvent;
+import event.ServiceComponentEvent;
 import util.EConstant;
 
 public class MovementComponent implements Component {
@@ -14,6 +15,8 @@ public class MovementComponent implements Component {
 	private double velocityX, velocityY, accelerationX, accelerationY = 0;
 	private long previousTimestamp;
 	private double dt;
+	
+	private boolean moving;
 
 	public MovementComponent(EventManager eventManager, WorldPositionComponent position, CollisionBoxComponent hitbox,
 			Driver... drivers) {
@@ -22,32 +25,35 @@ public class MovementComponent implements Component {
 		this.hitbox = hitbox;
 		this.drivers = drivers;
 		this.previousTimestamp = System.nanoTime();
+
+		eventManager.register(EConstant.SERVICE_COMPONENT_EVENT, this);
 	}
 
 	@Override
 	public void update() {
-		// System.out.println(position);
-		long timestamp = System.nanoTime();
-		dt = (timestamp - previousTimestamp) / 1000000000.0;
-		previousTimestamp = timestamp;
-		for (Driver driver : drivers) {
-			driver.drive(this);
-		}
-		velocityX += accelerationX * dt;
-		velocityY += accelerationY * dt;
-		if (Math.abs(velocityX) < EConstant.MINIMUM_VELOCITY)
-			velocityX = 0.0;
-		if (Math.abs(velocityY) < EConstant.MINIMUM_VELOCITY)
-			velocityY = 0.0;
-		position.setPositionX(position.getX() + velocityX * dt);
-		position.setPositionY(position.getY() + velocityY * dt);
-		eventManager.raise(new ObjectMovedEvent(this));
+		eventManager.raise(new ServiceComponentEvent(eventManager.getTime(), this));
 	}
 
 	@Override
 	public void onEvent(Event event) {
-		// TODO Auto-generated method stub
-
+		if (((ServiceComponentEvent) event).getComponent() == this) {
+			// System.out.println(position);
+			long timestamp = System.nanoTime();
+			dt = (timestamp - previousTimestamp) / 1000000000.0;
+			previousTimestamp = timestamp;
+			for (Driver driver : drivers) {
+				driver.drive(this);
+			}
+			velocityX += accelerationX * dt;
+			velocityY += accelerationY * dt;
+			if (Math.abs(velocityX) < EConstant.MINIMUM_VELOCITY)
+				velocityX = 0.0;
+			if (Math.abs(velocityY) < EConstant.MINIMUM_VELOCITY)
+				velocityY = 0.0;
+			position.setPositionX(position.getX() + velocityX * dt);
+			position.setPositionY(position.getY() + velocityY * dt);
+			eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this));
+		}
 	}
 
 	public WorldPositionComponent getPosition() {

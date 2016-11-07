@@ -5,11 +5,15 @@ import util.EConstant;
 
 public class RespawnEvent extends Event {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6936436040086450288L;
 	private WorldPositionComponent position;
 	private boolean spawned;
 
-	public RespawnEvent(WorldPositionComponent position) {
-		super(EConstant.RESPAWN_EVENT, EConstant.PRIORITY_GAME_LOGIC);
+	public RespawnEvent(Long timestamp, WorldPositionComponent position) {
+		super(timestamp, EConstant.RESPAWN_EVENT, EConstant.PRIORITY_GAME_LOGIC);
 		this.position = position;
 		this.spawned = false;
 	}

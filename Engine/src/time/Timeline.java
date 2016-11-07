@@ -6,9 +6,9 @@ public class Timeline {
 	protected long ticSize;
 	protected long time;
 
-	public Timeline(Timeline anchor, long origin, long ticSize) {
+	public Timeline(Timeline anchor, long ticSize) {
 		this.anchor = anchor;
-		this.origin = origin;
+		this.origin = anchor.getTime();
 		this.ticSize = ticSize;
 		this.time = 0;
 	}
@@ -28,5 +28,10 @@ public class Timeline {
 
 	public long getTicSize() {
 		return ticSize;
+	}
+	
+	public void reset() {
+		origin = anchor.getTime();
+		time = 0;
 	}
 }

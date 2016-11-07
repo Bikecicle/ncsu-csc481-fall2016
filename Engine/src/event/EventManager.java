@@ -39,7 +39,6 @@ public class EventManager {
 	}
 
 	public synchronized void raise(Event event) {
-		event.setTimestamp(gameTime.getTime());
 		eventQueue.add(event);
 		//System.out.println("Event Raised...");
 		//System.out.println(eventQueue.toString());
@@ -72,5 +71,9 @@ public class EventManager {
 	
 	public String toString() {
 		return registeredMap.toString();
+	}
+
+	public long getTime() {
+		return gameTime.getTime();
 	}
 }

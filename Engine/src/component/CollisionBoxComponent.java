@@ -56,7 +56,7 @@ public class CollisionBoxComponent implements Component, Driver {
 					overlapY = (mc.getPosition().getY() - mc.getHitbox().getHeight() / 2)
 							- (position.getY() + height / 2);
 				}
-				eventManager.raise(new CollisionEvent(mc.getHitbox(), this, overlapX, overlapY));
+				eventManager.raise(new CollisionEvent(eventManager.getTime(), mc.getHitbox(), this, overlapX, overlapY));
 			}
 		}
 	}
