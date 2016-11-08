@@ -21,12 +21,6 @@ public class CollisionPhysicsComponent implements Component {
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.COLLISION_EVENT) {
 			CollisionEvent collision = (CollisionEvent) event;

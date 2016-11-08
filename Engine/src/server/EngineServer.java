@@ -3,7 +3,8 @@ package server;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
-import event.RenderComponentEvent;
+import event.RenderAllEvent;
+import event.ServiceAllEvent;
 import gameobject.DeathZone;
 import gameobject.MovingPlatform;
 import gameobject.Platform;
@@ -31,7 +32,7 @@ public class EngineServer {
 	public EngineServer() {
 		this.realTime = new RealTimeline();
 		this.gameTime = new SoftTimeline(realTime, 1, 1);
-		this.loopTime = new Timeline(gameTime, 1);
+		this.loopTime = new Timeline(gameTime, EConstant.GAME_LOOP_DELTA);
 		this.eventManager = new EventManager(gameTime);
 		this.sceneManager = new SceneManager();
 		this.world = new World();
@@ -60,11 +61,11 @@ public class EngineServer {
 			client.stop();
 		}
 	}
-	
+
 	public void pause() {
 		gameTime.setScale(0);
 	}
-	
+
 	public void resume() {
 		gameTime.setScale(1);
 	}
@@ -73,15 +74,7 @@ public class EngineServer {
 		EngineServer engineServer = new EngineServer();
 		engineServer.initializeWorld();
 		System.out.println("Game World Initialized...");
-		while (!engineServer.getStopped()) {
-			// Main Game Loop 60 Hz
-			engineServer.loopTime.reset();
-			long loopIteration = 1;
-			while (engineServer.loopTime.getTime() < loopIteration) {
-				engineServer.world.update();
-			}
-		}
-		engineServer.stop();
+		engineServer.mainGameLoop();
 	}
 
 	private void initializeWorld() {
@@ -98,5 +91,23 @@ public class EngineServer {
 
 		world.buildGameObject(new SpawnPoint(eventManager, 30, 50));
 		System.out.println("Registered handlers: " + eventManager.toString());
+	}
+
+	private void mainGameLoop() {
+		loopTime.reset();
+		long loopIteration = 0;
+		while (!stopped) {
+			sceneManager.pushCurrent();
+			if (loopIteration % EConstant.FRAME_RATE == 0)
+				eventManager.raise(new RenderAllEvent(eventManager.getTime()));
+			if (loopIteration % EConstant.PHYSICS_UPDATE_RATE == 0)
+				eventManager.raise(new ServiceAllEvent(eventManager.getTime()));
+			eventManager.handleAll();
+			sceneManager.toss();
+			while (loopTime.getTime() < loopIteration) {
+				// Wait until next tic to raise global update events
+			}
+		}
+		stop();
 	}
 }

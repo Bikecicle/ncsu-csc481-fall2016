@@ -28,11 +28,6 @@ public class CollisionBoxComponent implements Component, Driver {
 	}
 
 	@Override
-	public void update() {
-		// Do nothing
-	}
-
-	@Override
 	public void onEvent(Event event) {
 		MovementComponent mc = ((ObjectMovedEvent) event).getMovementComponent();
 		if (mc != null && mc.getHitbox() != this) {

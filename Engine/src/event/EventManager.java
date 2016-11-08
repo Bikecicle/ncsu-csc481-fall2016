@@ -19,9 +19,9 @@ public class EventManager {
 		this.eventQueue = new PriorityQueue<Event>(new Comparator<Event>() {
 			@Override
 			public int compare(Event o1, Event o2) {
-				int c = o1.getPriority() - o2.getPriority();
+				int c = (int) Math.signum(o2.getTimestamp() - o1.getTimestamp());
 				if (c == 0)
-					return (int) Math.signum(o2.getTimestamp() - o1.getTimestamp());
+					return o1.getPriority() - o2.getPriority();
 				return c;
 			}
 		});

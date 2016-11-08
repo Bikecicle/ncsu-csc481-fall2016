@@ -52,8 +52,12 @@ public class EConstant {
 	public static final int WINDOW_HEIGHT = 600;
 	public static final double WORLD_WIDTH = 100;
 	public static final double WORLD_HEIGHT = 100;
-
-	public static final long NANOSECONDS_IN_SECOND = 1000000000;
-	public static final long FRAME_RATE = 60; // Delta: 16666667
-	public static final long PHYSICS_DELTA = 120; // Delta: 8333333
+	
+	// Game Loop Parameters
+	public static final double NANOSECONDS_IN_SECOND = 1000000000.0;
+	public static final long GAME_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 120);
+	public static final int FRAME_RATE = 2; // In game loop tics
+	public static final int PHYSICS_UPDATE_RATE = 1; // In game loop tics
+	
+	
 }

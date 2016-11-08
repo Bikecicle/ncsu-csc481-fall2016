@@ -15,8 +15,6 @@ public class MovementComponent implements Component {
 	private double velocityX, velocityY, accelerationX, accelerationY = 0;
 	private long previousTimestamp;
 	private double dt;
-	
-	private boolean moving;
 
 	public MovementComponent(EventManager eventManager, WorldPositionComponent position, CollisionBoxComponent hitbox,
 			Driver... drivers) {
@@ -24,35 +22,31 @@ public class MovementComponent implements Component {
 		this.position = position;
 		this.hitbox = hitbox;
 		this.drivers = drivers;
-		this.previousTimestamp = System.nanoTime();
+		this.previousTimestamp = eventManager.getTime();
 
 		eventManager.register(EConstant.SERVICE_COMPONENT_EVENT, this);
-	}
-
-	@Override
-	public void update() {
-		eventManager.raise(new ServiceComponentEvent(eventManager.getTime(), this));
+		eventManager.register(EConstant.SERVICE_ALL_EVENT, this);
 	}
 
 	@Override
 	public void onEvent(Event event) {
-		if (((ServiceComponentEvent) event).getComponent() == this) {
-			// System.out.println(position);
-			long timestamp = System.nanoTime();
-			dt = (timestamp - previousTimestamp) / 1000000000.0;
-			previousTimestamp = timestamp;
-			for (Driver driver : drivers) {
-				driver.drive(this);
+		if (event.getType() == EConstant.SERVICE_ALL_EVENT) {
+			eventManager.raise(new ServiceComponentEvent(eventManager.getTime(), this));
+		} else if (event.getType() == EConstant.SERVICE_COMPONENT_EVENT) {
+			if (((ServiceComponentEvent) event).getComponent() == this) {
+				// System.out.println(position);
+				long timestamp = eventManager.getTime();
+				dt = (timestamp - previousTimestamp) / EConstant.NANOSECONDS_IN_SECOND;
+				previousTimestamp = timestamp;
+				for (Driver driver : drivers) {
+					driver.drive(this);
+				}
+				velocityX += accelerationX * dt;
+				velocityY += accelerationY * dt;
+				position.setPositionX(position.getX() + velocityX * dt);
+				position.setPositionY(position.getY() + velocityY * dt);
+				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this));
 			}
-			velocityX += accelerationX * dt;
-			velocityY += accelerationY * dt;
-			if (Math.abs(velocityX) < EConstant.MINIMUM_VELOCITY)
-				velocityX = 0.0;
-			if (Math.abs(velocityY) < EConstant.MINIMUM_VELOCITY)
-				velocityY = 0.0;
-			position.setPositionX(position.getX() + velocityX * dt);
-			position.setPositionY(position.getY() + velocityY * dt);
-			eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this));
 		}
 	}
 

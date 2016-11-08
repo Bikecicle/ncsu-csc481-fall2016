@@ -17,11 +17,6 @@ public class WorldPositionComponent implements Component {
 	}
 
 	@Override
-	public void update() {
-		// Do nothing
-	}
-
-	@Override
 	public void onEvent(Event event) {
 		// Do nothing
 	}

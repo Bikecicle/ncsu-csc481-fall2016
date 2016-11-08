@@ -10,6 +10,7 @@ public class SceneManager {
 	
 	public SceneManager () {
 		buffer = new LinkedList<Scene>();
+		buffer.add(new Scene());
 		current = new Scene();
 	}
 	

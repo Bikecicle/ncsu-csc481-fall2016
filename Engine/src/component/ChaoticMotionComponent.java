@@ -21,12 +21,6 @@ public class ChaoticMotionComponent implements Component, Driver {
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void onEvent(Event event) {
 		// TODO Auto-generated method stub
 

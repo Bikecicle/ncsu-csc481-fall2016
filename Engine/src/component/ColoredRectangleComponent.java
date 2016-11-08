@@ -25,17 +25,17 @@ public class ColoredRectangleComponent implements Component, Renderable {
 		this.height = height;
 
 		eventManager.register(EConstant.RENDER_COMPONENT_EVENT, this);
-	}
-
-	@Override
-	public void update() {
-		eventManager.raise(new RenderComponentEvent(eventManager.getTime(), this));
+		eventManager.register(EConstant.RENDER_ALL_EVENT, this);
 	}
 
 	@Override
 	public void onEvent(Event event) {
-		if (((RenderComponentEvent) event).getComponent() == this)
-			render();
+		if (event.getType() == EConstant.RENDER_ALL_EVENT) {
+			eventManager.raise(new RenderComponentEvent(eventManager.getTime(), this));
+		} else if (event.getType() == EConstant.RENDER_COMPONENT_EVENT) {
+			if (((RenderComponentEvent) event).getComponent() == this)
+				render();
+		}
 	}
 	
 	@Override

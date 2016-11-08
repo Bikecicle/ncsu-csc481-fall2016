@@ -32,11 +32,6 @@ public class PlayerControlComponent implements Component, Driver {
 	}
 
 	@Override
-	public void update() {
-		// Do nothing
-	}
-
-	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.KEY_PRESSED_EVENT && ((KeyPressedEvent) event).getId() == playerId) {
 			map.press(((KeyPressedEvent) event).getKey());

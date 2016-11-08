@@ -16,12 +16,6 @@ public class SpawnPointComponent implements Component {
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void onEvent(Event event) {
 		if (!((RespawnEvent) event).isSpawned()) {
 			((RespawnEvent) event).getPosition().setPositionX(position.getX());
