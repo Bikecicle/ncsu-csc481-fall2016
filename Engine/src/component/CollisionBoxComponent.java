@@ -8,6 +8,10 @@ import util.EConstant;
 
 public class CollisionBoxComponent implements Component, Driver {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4425833608695605544L;
 	private EventManager eventManager;
 	private WorldPositionComponent position;
 	private double width;
@@ -29,29 +33,34 @@ public class CollisionBoxComponent implements Component, Driver {
 
 	@Override
 	public void onEvent(Event event) {
-		MovementComponent mc = ((ObjectMovedEvent) event).getMovementComponent();
-		if (mc != null && mc.getHitbox() != this) {
-			if (position.getX() - width / 2 < mc.getPosition().getX() + mc.getHitbox().getWidth() / 2
-					&& mc.getPosition().getX() - mc.getHitbox().getWidth() / 2 < position.getX() + width / 2
-					&& position.getY() - height / 2 < mc.getPosition().getY() + mc.getHitbox().getHeight() / 2
-					&& mc.getPosition().getY() - mc.getHitbox().getHeight() / 2 < position.getY() + this.height / 2) {
-				double overlapX;
-				double overlapY;
-				if (mc.getVelocityX() >= 0) {
-					overlapX = (mc.getPosition().getX() + mc.getHitbox().getWidth() / 2)
-							- (position.getX() - width / 2);
-				} else {
-					overlapX = (mc.getPosition().getX() - mc.getHitbox().getWidth() / 2)
-							- (position.getX() + width / 2);
+		if (event.getType() == EConstant.OBJECT_MOVED_EVENT) {
+			ObjectMovedEvent omEvent = (ObjectMovedEvent) event;
+
+			if (omEvent.getHitbox() != this) {
+				if (position.getX() - width / 2 < omEvent.getPositionX() + omEvent.getHitbox().getWidth() / 2
+						&& omEvent.getPositionX() - omEvent.getHitbox().getWidth() / 2 < position.getX() + width / 2
+						&& position.getY() - height / 2 < omEvent.getPositionY() + omEvent.getHitbox().getHeight() / 2
+						&& omEvent.getPositionY() - omEvent.getHitbox().getHeight() / 2 < position.getY()
+								+ height / 2) {
+					double overlapX;
+					double overlapY;
+					if (omEvent.getPositionX() < position.getX()) {
+						overlapX = (omEvent.getPositionX() + omEvent.getHitbox().getWidth() / 2)
+								- (position.getX() - width / 2);
+					} else {
+						overlapX = (omEvent.getPositionX() - omEvent.getHitbox().getWidth() / 2)
+								- (position.getX() + width / 2);
+					}
+					if (omEvent.getPositionY() < position.getY()) {
+						overlapY = (omEvent.getPositionY() + omEvent.getHitbox().getHeight() / 2)
+								- (position.getY() - height / 2);
+					} else {
+						overlapY = (omEvent.getPositionY() - omEvent.getHitbox().getHeight() / 2)
+								- (position.getY() + height / 2);
+					}
+					eventManager.raise(
+							new CollisionEvent(eventManager.getTime(), omEvent.getHitbox(), this, overlapX, overlapY));
 				}
-				if (mc.getVelocityY() >= 0) {
-					overlapY = (mc.getPosition().getY() + mc.getHitbox().getHeight() / 2)
-							- (position.getY() - height / 2);
-				} else {
-					overlapY = (mc.getPosition().getY() - mc.getHitbox().getHeight() / 2)
-							- (position.getY() + height / 2);
-				}
-				eventManager.raise(new CollisionEvent(eventManager.getTime(), mc.getHitbox(), this, overlapX, overlapY));
 			}
 		}
 	}

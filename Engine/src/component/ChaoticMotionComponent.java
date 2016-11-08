@@ -4,6 +4,10 @@ import event.Event;
 
 public class ChaoticMotionComponent implements Component, Driver {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5254311684821470068L;
 	double x, y;
 	double t = 0;
 	double a = 10;
@@ -16,8 +20,8 @@ public class ChaoticMotionComponent implements Component, Driver {
 	@Override
 	public void drive(MovementComponent movementComponent) {
 		t += movementComponent.getDt();
-		movementComponent.getPosition().setPositionX(x + a*Math.cos(0.5*t));
-		movementComponent.getPosition().setPositionY(y + a*Math.cos(0.3*t));
+		movementComponent.setTempPositionX(x + a * Math.cos(0.5 * t));
+		movementComponent.setTempPositionY(y + a * Math.cos(0.3 * t));
 	}
 
 	@Override

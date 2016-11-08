@@ -1,4 +1,4 @@
-package server;
+package serverold;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -23,7 +23,7 @@ public class ServerSocketListener implements Runnable, EventHandler {
 	private World world;
 	private int count;
 	private boolean stopped;
-	
+
 	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager, SceneManager sceneManager, World world) {
 		this.clients = clients;
 		this.eventManager = eventManager;
@@ -44,7 +44,7 @@ public class ServerSocketListener implements Runnable, EventHandler {
 				System.out.println("Waiting for clients to connect...");
 				Socket socket = serverSocket.accept();
 				count++;
-				ConnectedClient client = new ConnectedClient(socket, count, eventManager);
+				ConnectedClient client = new ConnectedClient(socket, count, eventManager, sceneManager);
 				new Thread(client.getIn()).start();
 				new Thread(client.getOut()).start();
 				client.setStopped(false);

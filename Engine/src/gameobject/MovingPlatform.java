@@ -10,14 +10,19 @@ import rendering.SceneManager;
 
 public class MovingPlatform extends GameObject {
 
-	public MovingPlatform(SceneManager sceneManager, EventManager eventManager, int x, int y, int width, int height) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5612477317948857182L;
+
+	public MovingPlatform(SceneManager sceneManager, EventManager eventManager, double x, double y, int width, int height) {
 		super();
-		WorldPositionComponent position = new WorldPositionComponent(x, y);
+		WorldPositionComponent position = new WorldPositionComponent(eventManager, x, y);
 		CollisionBoxComponent hitbox = new CollisionBoxComponent(eventManager, position, width, height, true, false);
 		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(sceneManager, eventManager, position,
 				width, height);
 		ChaoticMotionComponent chaos = new ChaoticMotionComponent(x, y);
-		MovementComponent movement = new MovementComponent(eventManager, position, hitbox, chaos);
+		MovementComponent movement = new MovementComponent(eventManager, hitbox, chaos);
 
 		addComponent(position);
 		addComponent(hitbox);

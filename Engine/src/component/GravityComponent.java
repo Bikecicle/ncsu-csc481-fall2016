@@ -5,6 +5,11 @@ import util.EConstant;
 
 public class GravityComponent implements Component, Driver {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2370007356638300795L;
+
 	public GravityComponent() {
 		
 	}

@@ -1,42 +1,32 @@
 package client;
 
-import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
+import event.Event;
+import event.EventHandler;
 import util.KeyInput;
 
-public class ClientOutThread implements Runnable {
+public class ClientOutThread implements Runnable, EventHandler {
 
-	private ObjectOutputStream out;
-	private boolean stopped;
-	private ConcurrentLinkedQueue<KeyInput> queue;
-
-	public ClientOutThread(ObjectOutputStream out) {
-		this.out = out;
-		this.stopped = false;
-		this.queue = new ConcurrentLinkedQueue<KeyInput>();
+	public ClientOutThread(ObjectOutputStream objectOutputStream) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void run() {
-		try {
-			while (!stopped) {
-				if (!queue.isEmpty()) {
-					out.writeObject(queue.poll());
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void stop() {
-		stopped = true;
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void offer(KeyInput keyInput) {
-		queue.add(keyInput);
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onEvent(Event event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

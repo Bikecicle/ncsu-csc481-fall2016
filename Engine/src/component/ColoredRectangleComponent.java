@@ -9,6 +9,10 @@ import util.EConstant;
 
 public class ColoredRectangleComponent implements Component, Renderable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1741938692736049328L;
 	private SceneManager sceneManager;
 	private EventManager eventManager;
 	private WorldPositionComponent position;

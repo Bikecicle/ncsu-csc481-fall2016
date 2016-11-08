@@ -8,18 +8,21 @@ import util.EConstant;
 
 public class MovementComponent implements Component {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5468157615970061823L;
 	private EventManager eventManager;
-	private WorldPositionComponent position;
 	private CollisionBoxComponent hitbox;
 	private Driver[] drivers;
 	private double velocityX, velocityY, accelerationX, accelerationY = 0;
+	private double tempPositionX, tempPositionY;
 	private long previousTimestamp;
 	private double dt;
 
-	public MovementComponent(EventManager eventManager, WorldPositionComponent position, CollisionBoxComponent hitbox,
+	public MovementComponent(EventManager eventManager, CollisionBoxComponent hitbox,
 			Driver... drivers) {
 		this.eventManager = eventManager;
-		this.position = position;
 		this.hitbox = hitbox;
 		this.drivers = drivers;
 		this.previousTimestamp = eventManager.getTime();
@@ -38,20 +41,23 @@ public class MovementComponent implements Component {
 				long timestamp = eventManager.getTime();
 				dt = (timestamp - previousTimestamp) / EConstant.NANOSECONDS_IN_SECOND;
 				previousTimestamp = timestamp;
+				tempPositionX = hitbox.getPosition().getX();
+				tempPositionY = hitbox.getPosition().getY();
 				for (Driver driver : drivers) {
 					driver.drive(this);
 				}
 				velocityX += accelerationX * dt;
 				velocityY += accelerationY * dt;
-				position.setPositionX(position.getX() + velocityX * dt);
-				position.setPositionY(position.getY() + velocityY * dt);
-				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this));
+				tempPositionX += velocityX * dt;
+				tempPositionY += velocityY * dt;
+				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), hitbox, tempPositionX,
+						tempPositionY));
 			}
 		}
 	}
 
 	public WorldPositionComponent getPosition() {
-		return position;
+		return hitbox.getPosition();
 	}
 
 	public double getVelocityX() {
@@ -92,6 +98,22 @@ public class MovementComponent implements Component {
 
 	public CollisionBoxComponent getHitbox() {
 		return hitbox;
+	}
+
+	public double getTempPositionX() {
+		return tempPositionX;
+	}
+
+	public void setTempPositionX(double tempPositionX) {
+		this.tempPositionX = tempPositionX;
+	}
+
+	public double getTempPositionY() {
+		return tempPositionY;
+	}
+
+	public void setTempPositionY(double tempPositionY) {
+		this.tempPositionY = tempPositionY;
 	}
 
 }

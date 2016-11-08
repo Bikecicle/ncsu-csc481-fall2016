@@ -3,27 +3,35 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import rendering.Scene;
+import event.ConnectionLostEvent;
+import event.Event;
+import event.EventManager;
 
 public class ClientInThread implements Runnable {
 
 	private ObjectInputStream stream;
+	private EventManager eventManager;
 	private boolean stopped;
 
-	public ClientInThread(ObjectInputStream stream) {
+	public ClientInThread(ObjectInputStream stream, EventManager eventManager) {
 		this.stream = stream;
+		this.eventManager = eventManager;
 		this.stopped = false;
 	}
 
 	@Override
 	public void run() {
-		while (!stopped) {
-			try {
-				EngineClient.scene = (Scene) stream.readObject();
-			} catch (IOException | ClassNotFoundException e) {
-				System.out.println("Connection to server lost");
-				stop();
+		try {
+			EngineClient.id = stream.readInt();
+			System.out.println("Server has designated you as client " + EngineClient.id);
+			while (!stopped) {
+				Event event = (Event) stream.readObject();
+				eventManager.raise(event);
 			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Connection to server lost");
+			eventManager.raise(new ConnectionLostEvent(eventManager.getTime()));
 		}
 	}
 

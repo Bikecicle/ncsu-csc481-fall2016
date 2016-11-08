@@ -9,6 +9,10 @@ import util.EConstant;
 
 public class CollisionPhysicsComponent implements Component {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1550687788305067996L;
 	EventManager eventManager;
 	MovementComponent movementComponent;
 
@@ -26,49 +30,54 @@ public class CollisionPhysicsComponent implements Component {
 			CollisionEvent collision = (CollisionEvent) event;
 			double overlapX = collision.getOverlapX();
 			double overlapY = collision.getOverlapY();
+			double positionX = 0;
+			double positionY = 0;
 			if (collision.getHitbox1() == this.movementComponent.getHitbox()) {
 				if (collision.isSolid()) {
 					// Bounce off
 					if (collision.isMoveable()) {
 						// Energy transfer
+						System.out.println("Wat");
 						if (Math.abs(overlapX) < Math.abs(overlapY)) {
 							// x-axis collision
-							movementComponent.getPosition().moveX(-overlapX * 2);
-							movementComponent.setVelocityX(
-									movementComponent.getVelocityX() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
+							positionX = movementComponent.getPosition().getX() - overlapX;
+							positionY = movementComponent.getPosition().getY();
+							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox2(),
+									movementComponent.getVelocityX(), 0));
+							movementComponent.setVelocityX(0);
 							movementComponent.setVelocityY(
 									movementComponent.getVelocityY() * EConstant.FRICTION_COEFFICIENT);
-							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox2(),
-									-movementComponent.getVelocityX(), 0));
 						} else {
 							// y-axis collision
-							movementComponent.getPosition().moveY(-overlapY * 2);
-							movementComponent.setVelocityY(
-									movementComponent.getVelocityY() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
+							positionX = movementComponent.getPosition().getX();
+							positionY = movementComponent.getPosition().getY() - overlapY;
+							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox2(), 0,
+									movementComponent.getVelocityY()));
+							movementComponent.setVelocityY(0);
 							movementComponent.setVelocityX(
 									movementComponent.getVelocityX() * EConstant.FRICTION_COEFFICIENT);
-							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox2(), 0,
-									-movementComponent.getVelocityY()));
 						}
 					} else {
 						// Static surface
 						if (Math.abs(overlapX) < Math.abs(overlapY)) {
 							// x-axis collision
-							movementComponent.getPosition().moveX(-overlapX * 2);
+							positionX = movementComponent.getPosition().getX() - overlapX * 2;
+							positionY = movementComponent.getPosition().getY();
 							movementComponent.setVelocityX(
 									movementComponent.getVelocityX() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT);
 							movementComponent.setVelocityY(
 									movementComponent.getVelocityY() * EConstant.FRICTION_COEFFICIENT);
 						} else {
 							// y-axis collision
-							movementComponent.getPosition().moveY(-overlapY * 2);
+							positionX = movementComponent.getPosition().getX();
+							positionY = movementComponent.getPosition().getY() - overlapY * 2;
 							movementComponent.setVelocityY(
 									movementComponent.getVelocityY() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT);
 							movementComponent.setVelocityX(
 									movementComponent.getVelocityX() * EConstant.FRICTION_COEFFICIENT);
 						}
 					}
-					eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), movementComponent));
+					eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), movementComponent.getHitbox(), positionX, positionY));
 				} else {
 					// Pass through (do nothing)
 				}
@@ -77,22 +86,18 @@ public class CollisionPhysicsComponent implements Component {
 					// Energy transfer
 					if (Math.abs(overlapX) < Math.abs(overlapY)) {
 						// x-axis collision
-						movementComponent.getPosition().moveX(overlapX * 2);
-						movementComponent.setVelocityX(
-								movementComponent.getVelocityX() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
+						eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox1(),
+								movementComponent.getVelocityX(), 0));
+						movementComponent.setVelocityX(0);
 						movementComponent.setVelocityY(movementComponent.getVelocityY()
 								*  EConstant.FRICTION_COEFFICIENT);
-						eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox1(),
-								-movementComponent.getVelocityX(), 0));
 					} else {
 						// y-axis collision
-						movementComponent.getPosition().moveY(overlapY * 2);
-						movementComponent.setVelocityY(
-								movementComponent.getVelocityY() * -EConstant.COLLISION_ELASTICITY_COEFFICIENT / 2);
-						movementComponent.setVelocityX(movementComponent.getVelocityX()
-								* EConstant.FRICTION_COEFFICIENT);
 						eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), collision.getHitbox1(), 0,
 								-movementComponent.getVelocityY()));
+						movementComponent.setVelocityY(0);
+						movementComponent.setVelocityX(movementComponent.getVelocityX()
+								* EConstant.FRICTION_COEFFICIENT);
 					}
 				}
 			}

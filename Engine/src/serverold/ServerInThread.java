@@ -1,11 +1,13 @@
-package server;
+package serverold;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import event.ClientDisconnectEvent;
-import event.Event;
 import event.EventManager;
+import event.KeyPressedEvent;
+import event.KeyReleasedEvent;
+import util.KeyInput;
 
 public class ServerInThread implements Runnable {
 
@@ -25,8 +27,13 @@ public class ServerInThread implements Runnable {
 	public void run() {
 		try {
 			while (!stopped) {
-				Event event = (Event) stream.readObject();
-				eventManager.raise(event);
+				KeyInput input = (KeyInput) stream.readObject();
+				if (input.getPressed()) {
+					eventManager.raise(new KeyPressedEvent(eventManager.getTime(), input.getKey(), id));
+				} else {
+					eventManager.raise(new KeyReleasedEvent(eventManager.getTime(), input.getKey(), id));
+				}
+				//System.out.println("Key Event: " + input.getKey() + " by client " + id + " - pressed = " + input.getPressed());
 			}
 			stream.close();
 		} catch (ClassNotFoundException | IOException e) {

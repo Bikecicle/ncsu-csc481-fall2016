@@ -10,6 +10,10 @@ import util.PressedKeyMap;
 
 public class PlayerControlComponent implements Component, Driver {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9065247151360359992L;
 	private PressedKeyMap map;
 	private CollisionBoxComponent collisionBoxComponent;
 	private boolean jumping;

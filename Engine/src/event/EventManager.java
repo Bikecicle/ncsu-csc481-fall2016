@@ -1,5 +1,6 @@
 package event;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,8 +9,12 @@ import java.util.PriorityQueue;
 
 import time.Timeline;
 
-public class EventManager {
+public class EventManager implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7696820900006657202L;
 	private HashMap<Integer, List<EventHandler>> registeredMap;
 	private PriorityQueue<Event> eventQueue;
 	private Timeline gameTime;

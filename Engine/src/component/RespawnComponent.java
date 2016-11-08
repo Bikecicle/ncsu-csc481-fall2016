@@ -8,20 +8,27 @@ import util.EConstant;
 
 public class RespawnComponent implements Component {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6226201588878691649L;
 	private EventManager eventManager;
-	private WorldPositionComponent position;
+	private CollisionBoxComponent hitbox;
 
-	public RespawnComponent(EventManager eventManager, WorldPositionComponent position) {
+	public RespawnComponent(EventManager eventManager, CollisionBoxComponent hitbox) {
 		this.eventManager = eventManager;
-		this.position = position;
+		this.hitbox = hitbox;
 
 		eventManager.register(EConstant.OBJECT_DAMAGE_EVENT, this);
 	}
 
 	@Override
 	public void onEvent(Event event) {
-		if (((ObjectDamageEvent) event).getPosition() == position) {
-			eventManager.raise(new RespawnEvent(eventManager.getTime(), position));
+		if (event.getType() == EConstant.OBJECT_DAMAGE_EVENT) {
+			ObjectDamageEvent odEvent = (ObjectDamageEvent) event;
+			if (odEvent.getHitbox() == hitbox) {
+				eventManager.raise(new RespawnEvent(eventManager.getTime(), hitbox));
+			}
 		}
 	}
 

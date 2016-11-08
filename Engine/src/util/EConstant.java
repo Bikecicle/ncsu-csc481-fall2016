@@ -32,6 +32,8 @@ public class EConstant {
 	public static final int CLIENT_DISCONNECT_EVENT = 11;
 	public static final int RENDER_ALL_EVENT = 12;
 	public static final int SERVICE_ALL_EVENT = 13;
+	public static final int CONNECTION_LOST_EVENT = 14;
+	public static final int TELEPORT_WORLD_EVENT = 15;
 
 	// Keys
 	public static final int KEY_UP = 38;
@@ -45,7 +47,7 @@ public class EConstant {
 	public static final double PLAYER_MAX_VELOCITY = 50;
 	public static final double GRAVITY = -100;
 	public static final double COLLISION_ELASTICITY_COEFFICIENT = 0.5;
-	public static final double FRICTION_COEFFICIENT = 0.9;
+	public static final double FRICTION_COEFFICIENT = 0.99;
 	public static final double MINIMUM_VELOCITY = 0.01;
 
 	public static final int WINDOW_WIDTH = 600;
@@ -57,7 +59,6 @@ public class EConstant {
 	public static final double NANOSECONDS_IN_SECOND = 1000000000.0;
 	public static final long GAME_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 120);
 	public static final int FRAME_RATE = 2; // In game loop tics
-	public static final int PHYSICS_UPDATE_RATE = 1; // In game loop tics
-	
-	
+	public static final int PHYSICS_UPDATE_RATE = 1; // In game loop tics	
+
 }

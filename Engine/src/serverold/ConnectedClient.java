@@ -1,4 +1,4 @@
-package server;
+package serverold;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,11 +35,11 @@ public class ConnectedClient {
 		this.stopped = stopped;
 	}
 
-	public ConnectedClient(Socket socket, int id, EventManager eventManager) {
+	public ConnectedClient(Socket socket, int id, EventManager eventManager, SceneManager sceneManager) {
 		try {
 			this.socket = socket;
 			this.in = new ServerInThread(new ObjectInputStream(socket.getInputStream()), eventManager, id);
-			this.out = new ServerOutThread(new ObjectOutputStream(socket.getOutputStream()), eventManager, id);
+			this.out = new ServerOutThread(new ObjectOutputStream(socket.getOutputStream()), sceneManager);
 			this.id = id;
 			this.stopped = true;
 		} catch (IOException e) {

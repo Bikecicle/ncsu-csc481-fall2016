@@ -1,4 +1,4 @@
-package server;
+package serverold;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -83,7 +83,7 @@ public class EngineServer {
 		world.buildGameObject(new Platform(sceneManager, eventManager, 30, 30, 30, 5));
 		world.buildGameObject(new Platform(sceneManager, eventManager, 80, 40, 10, 30));
 		world.buildGameObject(new Platform(sceneManager, eventManager, 30, 20, 10, 20));
-		world.buildGameObject(new MovingPlatform(sceneManager, eventManager, 50, 50, 30, 10));
+		//world.buildGameObject(new MovingPlatform(sceneManager, eventManager, 50, 50, 30, 10));
 
 		world.buildGameObject(new DeathZone(eventManager, -5, 50, 10, 100));
 		world.buildGameObject(new DeathZone(eventManager, 105, 50, 10, 100));

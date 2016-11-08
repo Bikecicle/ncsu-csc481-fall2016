@@ -2,35 +2,51 @@ package server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import rendering.SceneManager;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ServerOutThread implements Runnable {
+import event.Event;
+import event.EventHandler;
+import event.EventManager;
+import util.EConstant;
+
+public class ServerOutThread implements Runnable, EventHandler {
 
 	private ObjectOutputStream stream;
+	private ConcurrentLinkedQueue<Event> outgoingEvents;
+	private int id;
 	private boolean stopped;
-	private SceneManager sceneManager;
 
-	public ServerOutThread(ObjectOutputStream stream, SceneManager sceneManager) {
+	public ServerOutThread(ObjectOutputStream stream, EventManager eventManager, int id) {
 		this.stream = stream;
+		this.outgoingEvents = new ConcurrentLinkedQueue<Event>();
+		this.id = id;
 		this.stopped = false;
-		this.sceneManager = sceneManager;
+
+		eventManager.register(EConstant.OBJECT_MOVED_EVENT, this);
 	}
 
 	@Override
 	public void run() {
-		while (!stopped) {
-			if (!sceneManager.isEmpty()) {
-				try {
-					stream.writeObject(sceneManager.read());
-				} catch (IOException e) {
-					stop();
+		try {
+			stream.writeInt(id);
+			while (!stopped) {
+				if (!outgoingEvents.isEmpty()) {
+					stream.writeObject(outgoingEvents.poll());
 				}
 			}
+			stream.close();
+		} catch (IOException e) {
+			// Do nothing for now
 		}
 	}
 
 	public void stop() {
 		stopped = true;
+	}
+
+	@Override
+	public void onEvent(Event event) {
+		outgoingEvents.add(event);
 	}
 
 }
