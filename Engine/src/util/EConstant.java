@@ -52,7 +52,7 @@ public class EConstant {
 	public static final double PLAYER_MAX_VELOCITY = 50;
 	public static final double GRAVITY = -100;
 	public static final double COLLISION_ELASTICITY_COEFFICIENT = 0.5;
-	public static final double FRICTION_COEFFICIENT = 0.99;
+	public static final double FRICTION_COEFFICIENT = 0.95;
 	public static final double MINIMUM_VELOCITY = 0.01;
 
 	public static final int WINDOW_WIDTH = 600;
@@ -64,5 +64,6 @@ public class EConstant {
 	public static final double NANOSECONDS_IN_SECOND = 1000000000.0;
 	public static final long GAME_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 120);
 	public static final long RENDER_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 60);
+	public static final int THREAD_POOL_SIZE = 4;
 
 }

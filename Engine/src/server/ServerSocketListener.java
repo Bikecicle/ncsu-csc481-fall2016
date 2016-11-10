@@ -23,7 +23,8 @@ public class ServerSocketListener implements Runnable, EventHandler {
 	private int count;
 	private boolean stopped;
 
-	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager, World world) {
+	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager,
+			World world) {
 		this.clients = clients;
 		this.eventManager = eventManager;
 		this.world = world;

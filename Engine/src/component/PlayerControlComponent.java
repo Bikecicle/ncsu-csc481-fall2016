@@ -48,7 +48,7 @@ public class PlayerControlComponent extends Component implements Driver {
 		} else if (event.getType() == EConstant.KEY_RELEASED_EVENT) {
 			KeyReleasedEvent krEvent = (KeyReleasedEvent) event;
 			if (krEvent.getId() == playerId) {
-				map.press(krEvent.getKey());
+				map.release(krEvent.getKey());
 			}
 		} else if (event.getType() == EConstant.COLLISION_EVENT) {
 			CollisionEvent cEvent = (CollisionEvent) event;
@@ -68,7 +68,6 @@ public class PlayerControlComponent extends Component implements Driver {
 		} else if (map.pressed(EConstant.KEY_LEFT)) {
 			if (motion.getVelocityX() > -EConstant.PLAYER_MAX_VELOCITY) {
 				motion.setVelocityX(motion.getVelocityX() - EConstant.PLAYER_ACCELERATION * motion.getDt());
-				System.out.println("wat");
 			}
 		} else if (map.pressed(EConstant.KEY_RIGHT)) {
 			if (motion.getVelocityX() < EConstant.PLAYER_MAX_VELOCITY) {

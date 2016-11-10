@@ -41,7 +41,7 @@ public class CollisionBoxComponent extends Component {
 		if (event.getType() == EConstant.OBJECT_MOVED_EVENT) {
 			ObjectMovedEvent omEvent = (ObjectMovedEvent) event;
 
-			if (omEvent.getOid() != this.getOid()) {
+			if (omEvent.getOid() != this.getOid() && !omEvent.isChain()) {
 				if (position.getX() - width / 2 < omEvent.getPositionX() + omEvent.getWidth() / 2
 						&& omEvent.getPositionX() - omEvent.getWidth() / 2 < position.getX() + width / 2
 						&& position.getY() - height / 2 < omEvent.getPositionY() + omEvent.getHeight() / 2

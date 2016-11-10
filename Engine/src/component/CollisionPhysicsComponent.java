@@ -41,10 +41,9 @@ public class CollisionPhysicsComponent extends Component {
 					// Bounce off
 					if (cEvent.isMoveable()) {
 						// Energy transfer
-						System.out.println("Wat");
 						if (Math.abs(overlapX) < Math.abs(overlapY)) {
 							// x-axis collision
-							positionX = movementComponent.getPosition().getX() - overlapX;
+							positionX = movementComponent.getPosition().getX() - overlapX * 2;
 							positionY = movementComponent.getPosition().getY();
 							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), cEvent.getOid2(),
 									movementComponent.getVelocityX(), 0));
@@ -54,7 +53,7 @@ public class CollisionPhysicsComponent extends Component {
 						} else {
 							// y-axis collision
 							positionX = movementComponent.getPosition().getX();
-							positionY = movementComponent.getPosition().getY() - overlapY;
+							positionY = movementComponent.getPosition().getY() - overlapY * 2;
 							eventManager.raise(new MomentumTransferEvent(eventManager.getTime(), cEvent.getOid2(), 0,
 									movementComponent.getVelocityY()));
 							movementComponent.setVelocityY(0);
@@ -82,7 +81,7 @@ public class CollisionPhysicsComponent extends Component {
 						}
 					}
 					eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getOid(), positionX, positionY,
-							movementComponent.getHitbox().getWidth(), movementComponent.getHitbox().getHeight()));
+							movementComponent.getHitbox().getWidth(), movementComponent.getHitbox().getHeight(), true));
 				} else {
 					// Pass through (do nothing)
 				}

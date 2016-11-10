@@ -28,12 +28,16 @@ public class ClientOutThread implements Runnable, EventHandler {
 	public void run() {
 		try {
 			while (!stopped) {
-				if (!outgoingEvents.isEmpty()) {
-					stream.writeObject(outgoingEvents.poll());
+				Event event;
+				synchronized (outgoingEvents) {
+					while (outgoingEvents.isEmpty())
+						outgoingEvents.wait();
+					event = outgoingEvents.poll();
 				}
+				stream.writeObject(event);
 			}
 			stream.close();
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			// Do nothing for now
 		}
 	}
@@ -43,8 +47,11 @@ public class ClientOutThread implements Runnable, EventHandler {
 	}
 
 	@Override
-	public void onEvent(Event event) {
-		outgoingEvents.add(event);
+	public synchronized void onEvent(Event event) {
+		synchronized (outgoingEvents) {
+			outgoingEvents.add(event);
+			outgoingEvents.notify();
+		}
 	}
 
 	@Override

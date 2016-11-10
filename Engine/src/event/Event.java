@@ -8,9 +8,9 @@ public class Event implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -5238937547210725759L;
-	int type;
-	int priority;
-	long timestamp;
+	private int type;
+	private int priority;
+	private long timestamp;
 	
 	public Event(long timestamp, int type, int priority) {
 		this.timestamp = timestamp;
@@ -34,9 +34,4 @@ public class Event implements Serializable{
 		if (priority > 0)
 			priority--;
 	}
-	
-	public String toString() {
-		return type + ": " + timestamp;
-	}
-	
 }

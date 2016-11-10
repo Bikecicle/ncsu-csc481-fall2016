@@ -32,7 +32,7 @@ public class SpawnPointComponent extends Component {
 			RespawnEvent rEvent = (RespawnEvent) event;
 			if (!rEvent.isSpawned()) {
 				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), rEvent.getOid(), position.getX(),
-						position.getY(), rEvent.getWidth(), rEvent.getHeight()));
+						position.getY(), rEvent.getWidth(), rEvent.getHeight(), true));
 				rEvent.setSpawned(true);
 			}
 		}

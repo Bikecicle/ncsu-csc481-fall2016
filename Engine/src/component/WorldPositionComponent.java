@@ -44,6 +44,14 @@ public class WorldPositionComponent extends Component {
 	public double getY() {
 		return positionY;
 	}
+	
+	public void moveX(double r) {
+		positionX += r;
+	}
+	
+	public void moveY(double r) {
+		positionY += r;
+	}
 
 	@Override
 	public Component copy() {

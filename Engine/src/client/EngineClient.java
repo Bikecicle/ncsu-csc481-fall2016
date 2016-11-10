@@ -59,7 +59,7 @@ public class EngineClient extends PApplet implements EventHandler {
 
 			PApplet.main("client.EngineClient");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Cannot connect to server");
 		}
 	}
 
@@ -78,13 +78,18 @@ public class EngineClient extends PApplet implements EventHandler {
 		background(200);
 		eventManager.raise(new RenderAllEvent(eventManager.getTime()));
 		while (loopTime.getTime() < loopIteration) {
-			eventManager.handle();
+			// Wait for next tic
 		}
-		for (Shape shape : scene) {
-			if (shape.getType() == EConstant.RECTANGLE) {
-				Rectangle r = (Rectangle) shape;
-				fill(0);
-				rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+		synchronized (scene) {
+			if (!scene.isEmpty()) {
+				for (Shape shape : scene) {
+					if (shape.getType() == EConstant.RECTANGLE) {
+						Rectangle r = (Rectangle) shape;
+						fill(0);
+						rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+					}
+				}
+
 			}
 		}
 		scene.clear();

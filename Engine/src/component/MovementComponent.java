@@ -3,7 +3,6 @@ package component;
 import event.Event;
 import event.EventManager;
 import event.ObjectMovedEvent;
-import event.ServiceComponentEvent;
 import util.EConstant;
 
 public class MovementComponent extends Component {
@@ -30,34 +29,29 @@ public class MovementComponent extends Component {
 
 	@Override
 	public void register() {
-		eventManager.register(EConstant.SERVICE_COMPONENT_EVENT, this);
 		eventManager.register(EConstant.SERVICE_ALL_EVENT, this);
 	}
 
 	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.SERVICE_ALL_EVENT) {
-			eventManager.raise(new ServiceComponentEvent(eventManager.getTime(), this.getOid()));
-		} else if (event.getType() == EConstant.SERVICE_COMPONENT_EVENT) {
-			if (((ServiceComponentEvent) event).getOid() == this.getOid()) {
-				long timestamp = eventManager.getTime();
-				dt = (timestamp - previousTimestamp) / EConstant.NANOSECONDS_IN_SECOND;
-				previousTimestamp = timestamp;
-				tempPositionX = hitbox.getPosition().getX();
-				tempPositionY = hitbox.getPosition().getY();
-				for (Driver driver : drivers) {
-					driver.drive(this);
-				}
-				velocityX += accelerationX * dt;
-				velocityY += accelerationY * dt;
-				tempPositionX += velocityX * dt;
-				tempPositionY += velocityY * dt;
-				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getOid(), tempPositionX,
-						tempPositionY, hitbox.getWidth(), hitbox.getHeight()));
+			long timestamp = eventManager.getTime();
+			dt = (timestamp - previousTimestamp) / EConstant.NANOSECONDS_IN_SECOND;
+			previousTimestamp = timestamp;
+			tempPositionX = hitbox.getPosition().getX();
+			tempPositionY = hitbox.getPosition().getY();
+			for (Driver driver : drivers) {
+				driver.drive(this);
 			}
+			velocityX += accelerationX * dt;
+			velocityY += accelerationY * dt;
+			tempPositionX += velocityX * dt;
+			tempPositionY += velocityY * dt;
+			eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getOid(), tempPositionX, tempPositionY,
+					hitbox.getWidth(), hitbox.getHeight(), false));
 		}
 	}
-	
+
 	public WorldPositionComponent getPosition() {
 		return hitbox.getPosition();
 	}

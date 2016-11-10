@@ -17,7 +17,6 @@ public class KeyReleasedEvent extends Event {
 	}
 
 	public int getKey() {
-		System.out.println(key);
 		return key;
 	}
 

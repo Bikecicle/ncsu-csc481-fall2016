@@ -27,7 +27,7 @@ public class Scene extends LinkedList<Shape> implements EventHandler{
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public synchronized void onEvent(Event event) {
 		if (event.getType() == EConstant.RENDER_COMPONENT_EVENT) {
 			add(((RenderComponentEvent) event).getShape());
 		}

@@ -22,8 +22,11 @@ public class EngineServer {
 	private EventManager eventManager;
 	private World world;
 
+	//private WorkerThread[] workers;
+
 	private ConcurrentLinkedQueue<ConnectedClient> clients;
 	private ServerSocketListener newConnectionListener;
+
 	private boolean stopped;
 
 	public EngineServer() {
@@ -32,10 +35,17 @@ public class EngineServer {
 		this.loopTime = new Timeline(gameTime, EConstant.GAME_LOOP_DELTA);
 		this.eventManager = new EventManager(gameTime);
 		this.world = new World("server", eventManager);
-
+/**
+		this.workers = new WorkerThread[EConstant.THREAD_POOL_SIZE];
+		for (int i = 0; i < EConstant.THREAD_POOL_SIZE; i++) {
+			workers[i] = new WorkerThread(eventManager, i + 1);
+			(new Thread(workers[i])).start();
+		}
+*/
 		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
 		this.newConnectionListener = new ServerSocketListener(clients, eventManager, world);
 		new Thread(newConnectionListener).start();
+
 		this.stopped = false;
 	}
 
@@ -95,7 +105,7 @@ public class EngineServer {
 		while (!stopped) {
 			eventManager.raise(new ServiceAllEvent(eventManager.getTime()));
 			while (loopTime.getTime() < loopIteration) {
-				eventManager.handle();
+				// do nothing
 			}
 			loopIteration++;
 		}
