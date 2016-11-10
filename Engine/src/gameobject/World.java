@@ -1,7 +1,6 @@
 package gameobject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,50 +16,70 @@ public class World implements EventHandler, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -7622794570858148559L;
-	private List<Component> worldComponents;
+	private List<Component> components;
+	private List<GameObject> roster;
 	private EventManager eventManager;
+	private int wid;
 
-	public World(EventManager eventManager) {
-		this.worldComponents = new LinkedList<Component>();
+	public World(String name, EventManager eventManager) {
+		this.components = new LinkedList<Component>();
+		this.roster = new LinkedList<GameObject>();
 		this.eventManager = eventManager;
+		this.wid = name.hashCode();
 		register();
 	}
 
-	public synchronized void addGameObject(List<Component> gameObject) {
-		worldComponents.addAll(gameObject);
+	public synchronized void addGameObject(GameObject gameObject) {
+		components.addAll(gameObject.build(eventManager));
+		roster.add(gameObject);
+	}
+
+	public synchronized void addDummyObject(GameObject gameObject) {
+		if (gameObject.hasDummy())
+			components.addAll(gameObject.buildDummy(eventManager));
+		roster.add(gameObject);
 	}
 
 	public synchronized void destroyGameObject(int oid) {
-		for (Component component : worldComponents) {
+		for (Component component : components) {
 			if (component.getOid() == oid)
-				worldComponents.remove(component);
+				components.remove(component);
 		}
-	}
-	
-	public synchronized void repopulate( List<Component> newComponents ) {
-		worldComponents = new LinkedList<Component>(newComponents);
-		for (Component component : worldComponents) {
-			component.setEventManager(eventManager);
+		for (GameObject object : roster) {
+			if (object.getOid() == oid) {
+				roster.remove(object);
+			}
 		}
 	}
 
-	public List<Component> getWorldComponents() {
-		return worldComponents;
+	public synchronized void bind(List<GameObject> masterRoster) {
+		roster.clear();
+		components.clear();
+		for (GameObject object : masterRoster) {
+			addDummyObject(object);
+		}
+		System.out.println("World copied and bound to server");
+	}
+
+	public List<Component> getComponents() {
+		return components;
 	}
 
 	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.WORLD_REQUEST_EVENT) {
-			List<Component> componentStream = new ArrayList<Component>(worldComponents);
-			for (Component component : componentStream) {
-				component.setEventManager(null);
+			eventManager.raise(new StreamWorldEvent(eventManager.getTime(), roster, wid));
+		} else if (event.getType() == EConstant.STREAM_WORLD_EVENT) {
+			StreamWorldEvent swEvent = (StreamWorldEvent) event;
+			if (swEvent.getWid() != wid) {
+				bind(swEvent.getRoster());
 			}
-			eventManager.raise(new StreamWorldEvent(eventManager.getTime(), componentStream));
 		}
 	}
 
 	@Override
 	public void register() {
 		eventManager.register(EConstant.WORLD_REQUEST_EVENT, this);
+		eventManager.register(EConstant.STREAM_WORLD_EVENT, this);
 	}
 }

@@ -18,8 +18,8 @@ public class PlayerControlComponent extends Component implements Driver {
 	private boolean jumping;
 	private int playerId;
 
-	public PlayerControlComponent(int id, EventManager eventManager, int playerId) {
-		super(id, eventManager);
+	public PlayerControlComponent(int oid, EventManager eventManager, int playerId) {
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.map = new PressedKeyMap();
 		this.playerId = playerId;
@@ -68,11 +68,17 @@ public class PlayerControlComponent extends Component implements Driver {
 		} else if (map.pressed(EConstant.KEY_LEFT)) {
 			if (motion.getVelocityX() > -EConstant.PLAYER_MAX_VELOCITY) {
 				motion.setVelocityX(motion.getVelocityX() - EConstant.PLAYER_ACCELERATION * motion.getDt());
+				System.out.println("wat");
 			}
 		} else if (map.pressed(EConstant.KEY_RIGHT)) {
 			if (motion.getVelocityX() < EConstant.PLAYER_MAX_VELOCITY) {
 				motion.setVelocityX(motion.getVelocityX() + EConstant.PLAYER_ACCELERATION * motion.getDt());
 			}
 		}
+	}
+
+	@Override
+	public Component copy() {
+		return new PlayerControlComponent(playerId, eventManager, playerId);
 	}
 }

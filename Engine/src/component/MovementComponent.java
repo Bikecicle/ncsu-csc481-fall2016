@@ -19,8 +19,8 @@ public class MovementComponent extends Component {
 	private long previousTimestamp;
 	private double dt;
 
-	public MovementComponent(int id, EventManager eventManager, CollisionBoxComponent hitbox, Driver... drivers) {
-		super(id, eventManager);
+	public MovementComponent(int oid, EventManager eventManager, CollisionBoxComponent hitbox, Driver... drivers) {
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
 		this.drivers = drivers;
@@ -40,7 +40,6 @@ public class MovementComponent extends Component {
 			eventManager.raise(new ServiceComponentEvent(eventManager.getTime(), this.getOid()));
 		} else if (event.getType() == EConstant.SERVICE_COMPONENT_EVENT) {
 			if (((ServiceComponentEvent) event).getOid() == this.getOid()) {
-				// System.out.println(position);
 				long timestamp = eventManager.getTime();
 				dt = (timestamp - previousTimestamp) / EConstant.NANOSECONDS_IN_SECOND;
 				previousTimestamp = timestamp;
@@ -117,5 +116,10 @@ public class MovementComponent extends Component {
 
 	public void setTempPositionY(double tempPositionY) {
 		this.tempPositionY = tempPositionY;
+	}
+
+	@Override
+	public Component copy() {
+		return new MovementComponent(oid, eventManager, hitbox, drivers);
 	}
 }

@@ -14,8 +14,8 @@ public class RespawnComponent extends Component {
 	private static final long serialVersionUID = 6226201588878691649L;
 	private CollisionBoxComponent hitbox;
 
-	public RespawnComponent(int id, EventManager eventManager, CollisionBoxComponent hitbox) {
-		super(id, eventManager);
+	public RespawnComponent(int oid, EventManager eventManager, CollisionBoxComponent hitbox) {
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
 		register();
@@ -34,5 +34,10 @@ public class RespawnComponent extends Component {
 				eventManager.raise(new RespawnEvent(eventManager.getTime(), this.getOid(), hitbox.getWidth(), hitbox.getHeight()));
 			}
 		}
+	}
+
+	@Override
+	public Component copy() {
+		return new RespawnComponent(oid, eventManager, hitbox);
 	}
 }

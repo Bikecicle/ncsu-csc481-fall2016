@@ -18,9 +18,9 @@ public class CollisionBoxComponent extends Component {
 	private boolean solid;
 	private boolean moveable;
 
-	public CollisionBoxComponent(int id, EventManager eventManager, WorldPositionComponent position, double width,
+	public CollisionBoxComponent(int oid, EventManager eventManager, WorldPositionComponent position, double width,
 			double height, boolean solid, boolean moveable) {
-		super(id, eventManager);
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.position = position;
 		this.width = width;
@@ -88,5 +88,11 @@ public class CollisionBoxComponent extends Component {
 
 	public boolean isMoveable() {
 		return moveable;
+	}
+
+
+	@Override
+	public Component copy() {
+		return new CollisionBoxComponent(oid, eventManager, position, width, height, solid, moveable);
 	}
 }

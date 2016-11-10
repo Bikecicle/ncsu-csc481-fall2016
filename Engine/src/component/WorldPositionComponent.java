@@ -13,8 +13,8 @@ public class WorldPositionComponent extends Component {
 	private static final long serialVersionUID = -7248611186555109028L;
 	private double positionX, positionY;
 
-	public WorldPositionComponent(int id, EventManager eventManager, double positionX, double positionY) {
-		super(id, eventManager);
+	public WorldPositionComponent(int oid, EventManager eventManager, double positionX, double positionY) {
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.positionX = positionX;
 		this.positionY = positionY;
@@ -43,5 +43,10 @@ public class WorldPositionComponent extends Component {
 
 	public double getY() {
 		return positionY;
+	}
+
+	@Override
+	public Component copy() {
+		return new WorldPositionComponent(oid, eventManager, positionX, positionY);
 	}
 }

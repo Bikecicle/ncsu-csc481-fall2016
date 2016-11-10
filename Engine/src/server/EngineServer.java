@@ -4,7 +4,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
 import event.ServiceAllEvent;
-import gameobject.GameObjectFactory;
+import gameobject.DeathZone;
+import gameobject.MovingPlatform;
+import gameobject.Platform;
+import gameobject.SpawnPoint;
 import gameobject.World;
 import time.RealTimeline;
 import time.SoftTimeline;
@@ -18,7 +21,6 @@ public class EngineServer {
 	private Timeline loopTime;
 	private EventManager eventManager;
 	private World world;
-	private GameObjectFactory factory;
 
 	private ConcurrentLinkedQueue<ConnectedClient> clients;
 	private ServerSocketListener newConnectionListener;
@@ -29,11 +31,10 @@ public class EngineServer {
 		this.gameTime = new SoftTimeline(realTime, 1, 1);
 		this.loopTime = new Timeline(gameTime, EConstant.GAME_LOOP_DELTA);
 		this.eventManager = new EventManager(gameTime);
-		this.world = new World(eventManager);
-		this.factory = new GameObjectFactory(eventManager, null);
+		this.world = new World("server", eventManager);
 
 		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
-		this.newConnectionListener = new ServerSocketListener(clients, eventManager, world, factory);
+		this.newConnectionListener = new ServerSocketListener(clients, eventManager, world);
 		new Thread(newConnectionListener).start();
 		this.stopped = false;
 	}
@@ -73,18 +74,18 @@ public class EngineServer {
 	}
 
 	private void initializeWorld() {
-		world.addGameObject(factory.platform("p1", 50, 10, 50, 10));
-		world.addGameObject(factory.platform("p2", 20, 80, 20, 20));
-		world.addGameObject(factory.platform("p3", 30, 30, 30, 5));
-		world.addGameObject(factory.platform("p4", 80, 40, 10, 30));
-		world.addGameObject(factory.platform("p5", 30, 20, 10, 20));
-		world.addGameObject(factory.movingPlatform("mp1", 50, 50, 30, 10));
+		world.addGameObject(new Platform("p1", 50, 10, 50, 10));
+		world.addGameObject(new Platform("p2", 20, 80, 20, 20));
+		world.addGameObject(new Platform("p3", 30, 30, 30, 5));
+		world.addGameObject(new Platform("p4", 80, 40, 10, 30));
+		world.addGameObject(new Platform("p5", 30, 20, 10, 20));
+		world.addGameObject(new MovingPlatform("mp1", 50, 50, 30, 10));
 
-		world.addGameObject(factory.deathZone("dz1", -5, 50, 10, 100));
-		world.addGameObject(factory.deathZone("dz2", 105, 50, 10, 100));
-		world.addGameObject(factory.deathZone("dz3", 50, -5, 100, 10));
+		world.addGameObject(new DeathZone("dz1", -5, 50, 10, 100));
+		world.addGameObject(new DeathZone("dz2", 105, 50, 10, 100));
+		world.addGameObject(new DeathZone("dz3", 50, -5, 100, 10));
 
-		world.addGameObject(factory.spawnPoint("sp1", 30, 50));
+		world.addGameObject(new SpawnPoint("sp1", 30, 50));
 		System.out.println("Registered handlers: " + eventManager.toString());
 	}
 
@@ -93,10 +94,10 @@ public class EngineServer {
 		long loopIteration = 0;
 		while (!stopped) {
 			eventManager.raise(new ServiceAllEvent(eventManager.getTime()));
-			eventManager.handleAll();
 			while (loopTime.getTime() < loopIteration) {
-				// Wait until next tic to raise global update events
+				eventManager.handle();
 			}
+			loopIteration++;
 		}
 		stop();
 	}

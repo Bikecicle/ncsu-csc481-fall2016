@@ -36,6 +36,9 @@ public class EConstant {
 	public static final int CONNECTION_LOST_EVENT = 14;
 	public static final int STREAM_WORLD_EVENT = 15;
 	public static final int WORLD_REQUEST_EVENT = 16;
+	
+	// Shapes
+	public static final int RECTANGLE = 1;
 
 	// Keys
 	public static final int KEY_UP = 38;
@@ -60,7 +63,6 @@ public class EConstant {
 	// Game Loop Parameters
 	public static final double NANOSECONDS_IN_SECOND = 1000000000.0;
 	public static final long GAME_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 120);
-	public static final int FRAME_RATE = 2; // In game loop tics
-	public static final int PHYSICS_UPDATE_RATE = 1; // In game loop tics	
+	public static final long RENDER_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 60);
 
 }

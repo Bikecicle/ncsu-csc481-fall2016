@@ -30,5 +30,7 @@ public abstract class Component implements EventHandler, Serializable {
 	public void setEventManager(EventManager eventManager){
 		this.eventManager = eventManager;
 	}
+	
+	public abstract Component copy();
 
 }

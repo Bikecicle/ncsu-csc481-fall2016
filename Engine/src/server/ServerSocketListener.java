@@ -10,8 +10,8 @@ import event.Event;
 import event.EventHandler;
 import event.EventManager;
 import event.WorldRequestEvent;
-import gameobject.GameObjectFactory;
 import gameobject.World;
+import gameobject.Character;
 import util.EConstant;
 
 public class ServerSocketListener implements Runnable, EventHandler {
@@ -20,16 +20,13 @@ public class ServerSocketListener implements Runnable, EventHandler {
 	private ServerSocket serverSocket = null;
 	private EventManager eventManager;
 	private World world;
-	private GameObjectFactory factory;
 	private int count;
 	private boolean stopped;
 
-	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager, World world,
-			GameObjectFactory factory) {
+	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager, World world) {
 		this.clients = clients;
 		this.eventManager = eventManager;
 		this.world = world;
-		this.factory = factory;
 		this.stopped = false;
 		this.count = 0;
 		register();
@@ -51,7 +48,7 @@ public class ServerSocketListener implements Runnable, EventHandler {
 				clients.add(client);
 				System.out.println("New connection established: client " + count);
 				System.out.println("Clients: " + clients.toString());
-				world.addGameObject(factory.character(("c" + count), count));
+				world.addGameObject(new Character(("c" + count), count));
 				eventManager.raise(new WorldRequestEvent(eventManager.getTime(), count));
 			}
 			serverSocket.close();

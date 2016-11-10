@@ -14,8 +14,8 @@ public class SpawnPointComponent extends Component {
 	private static final long serialVersionUID = 8338102255679833331L;
 	private WorldPositionComponent position;
 
-	public SpawnPointComponent(int id, EventManager eventManager, WorldPositionComponent position) {
-		super(id, eventManager);
+	public SpawnPointComponent(int oid, EventManager eventManager, WorldPositionComponent position) {
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.position = position;
 		register();
@@ -36,5 +36,10 @@ public class SpawnPointComponent extends Component {
 				rEvent.setSpawned(true);
 			}
 		}
+	}
+
+	@Override
+	public Component copy() {
+		return new SpawnPointComponent(oid, eventManager, position);
 	}
 }

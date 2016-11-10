@@ -15,8 +15,8 @@ public class CollisionPhysicsComponent extends Component {
 	private static final long serialVersionUID = 1550687788305067996L;
 	MovementComponent movementComponent;
 
-	public CollisionPhysicsComponent(int id, EventManager eventManager, MovementComponent movementComponent) {
-		super(id, eventManager);
+	public CollisionPhysicsComponent(int oid, EventManager eventManager, MovementComponent movementComponent) {
+		super(oid, eventManager);
 		this.eventManager = eventManager;
 		this.movementComponent = movementComponent;
 		register();
@@ -113,5 +113,10 @@ public class CollisionPhysicsComponent extends Component {
 				movementComponent.setVelocityY(movementComponent.getVelocityY() + mtEvent.getVelocityY());
 			}
 		}
+	}
+
+	@Override
+	public Component copy() {
+		return new CollisionPhysicsComponent(oid,  eventManager, movementComponent);
 	}
 }

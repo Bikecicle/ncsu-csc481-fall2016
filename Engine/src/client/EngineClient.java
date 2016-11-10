@@ -4,36 +4,37 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.List;
-
 import event.Event;
 import event.EventHandler;
 import event.EventManager;
+import event.KeyPressedEvent;
+import event.KeyReleasedEvent;
+import event.RenderAllEvent;
 import gameobject.World;
 import processing.core.PApplet;
-import rendering.ColoredRect;
-import rendering.Renderable;
+import rendering.Rectangle;
 import rendering.Scene;
+import rendering.Shape;
 import time.RealTimeline;
 import time.SoftTimeline;
+import time.Timeline;
 import util.EConstant;
-import util.KeyInput;
 import util.PressedKeyMap;
 
-public class EngineClient extends PApplet implements EventHandler{
+public class EngineClient extends PApplet implements EventHandler {
 
 	private static Socket socket;
 	private static ClientInThread in;
 	private static ClientOutThread out;
 	private static RealTimeline realTime;
 	private static SoftTimeline gameTime;
+	private static Timeline loopTime;
 	private static EventManager eventManager;
 	private static World world;
 	private static Scene scene;
 	public static int id;
-	
-	private static boolean stopped;
+
+	private static long loopIteration;
 
 	private static PressedKeyMap pressedKeyMap;
 
@@ -41,18 +42,21 @@ public class EngineClient extends PApplet implements EventHandler{
 		try {
 			realTime = new RealTimeline();
 			gameTime = new SoftTimeline(realTime, 1, 1);
+			loopTime = new Timeline(gameTime, EConstant.RENDER_LOOP_DELTA);
 			eventManager = new EventManager(gameTime);
-			world = new World(eventManager);
-			
+			world = new World("client" + id, eventManager);
+			scene = new Scene(eventManager);
+
 			socket = new Socket("localhost", EConstant.PORT);
 			System.out.println("Successfully connected to localhost:" + EConstant.PORT);
 			pressedKeyMap = new PressedKeyMap();
-			scene = new Scene();
-			out = new ClientOutThread(new ObjectOutputStream(socket.getOutputStream()));
+			out = new ClientOutThread(new ObjectOutputStream(socket.getOutputStream()), eventManager);
 			in = new ClientInThread(new ObjectInputStream(socket.getInputStream()), eventManager);
 			new Thread(out).start();
 			new Thread(in).start();
-			stopped = false;
+
+			loopIteration = 0;
+
 			PApplet.main("client.EngineClient");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -64,41 +68,55 @@ public class EngineClient extends PApplet implements EventHandler{
 	}
 
 	public void setup() {
+		frameRate(120);
 		fill(255);
 		rectMode(CENTER);
+		loopTime.reset();
 	}
 
 	public void draw() {
-		background(255);
+		background(200);
+		eventManager.raise(new RenderAllEvent(eventManager.getTime()));
+		while (loopTime.getTime() < loopIteration) {
+			eventManager.handle();
+		}
+		for (Shape shape : scene) {
+			if (shape.getType() == EConstant.RECTANGLE) {
+				Rectangle r = (Rectangle) shape;
+				fill(0);
+				rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+			}
+		}
+		scene.clear();
+		loopIteration++;
 	}
 
 	public void keyPressed() {
 		if (!pressedKeyMap.press(keyCode))
-			out.offer(new KeyInput(keyCode, true));
+			eventManager.raise(new KeyPressedEvent(eventManager.getTime(), keyCode, id));
 	}
 
 	public void keyReleased() {
 		pressedKeyMap.release(keyCode);
-		out.offer(new KeyInput(keyCode, false));
-	}
-
-	private int scaleX(double a) {
-		return (int) (a / EConstant.WORLD_WIDTH * EConstant.WINDOW_WIDTH);
-	}
-
-	private int scaleY(double a) {
-		return (int) (a / EConstant.WORLD_HEIGHT * EConstant.WINDOW_HEIGHT);
+		eventManager.raise(new KeyReleasedEvent(eventManager.getTime(), keyCode, id));
 	}
 
 	@Override
 	public void onEvent(Event event) {
-		// TODO Auto-generated method stub
-		
+		if (event.getType() == EConstant.CONNECTION_LOST_EVENT) {
+			in.stop();
+			out.stop();
+			System.out.println("Connection lost: exiting...");
+			this.exit();
+		}
 	}
 
 	@Override
 	public void register() {
-		// TODO Auto-generated method stub
-		
+		eventManager.register(EConstant.CONNECTION_LOST_EVENT, this);
+	}
+
+	public static World getWorld() {
+		return world;
 	}
 }

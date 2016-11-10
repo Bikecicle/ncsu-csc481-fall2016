@@ -2,7 +2,7 @@ package event;
 
 import java.util.List;
 
-import component.Component;
+import gameobject.GameObject;
 import util.EConstant;
 
 public class StreamWorldEvent extends Event {
@@ -11,14 +11,20 @@ public class StreamWorldEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = -5900366372536261883L;
-	private List<Component> componentStream;
+	private List<GameObject> roster;
+	private int wid;
 
-	public StreamWorldEvent(long timestamp, List<Component> componentStream) {
+	public StreamWorldEvent(long timestamp, List<GameObject> roster, int wid) {
 		super(timestamp, EConstant.STREAM_WORLD_EVENT, EConstant.PRIORITY_NETWORKING);
-		this.componentStream = componentStream;
+		this.roster = roster;
+		this.wid = wid;
 	}
 
-	public List<Component> getComponentStream() {
-		return componentStream;
+	public List<GameObject> getRoster() {
+		return roster;
+	}
+	
+	public int getWid() {
+		return wid;
 	}
 }

@@ -37,4 +37,9 @@ public class ChaoticMotionComponent extends Component implements Driver {
 		
 	}
 
+	@Override
+	public Component copy() {
+		return new ChaoticMotionComponent(oid, eventManager, x, y);
+	}
+
 }

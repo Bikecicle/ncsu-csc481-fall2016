@@ -1,5 +1,6 @@
 package event;
 
+import rendering.Shape;
 import util.EConstant;
 
 public class RenderComponentEvent extends Event {
@@ -8,14 +9,14 @@ public class RenderComponentEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 7598256964529546950L;
-	private int oid;
-
-	public RenderComponentEvent(Long timestamp, int oid) {
+	private Shape shape;
+	
+	public RenderComponentEvent(Long timestamp, Shape shape) {
 		super(timestamp, EConstant.RENDER_COMPONENT_EVENT, EConstant.PRIORITY_RENDERING);
-		this.oid = oid;
+		this.shape = shape;
 	}
 
-	public int getOid() {
-		return oid;
+	public Shape getShape() {
+		return shape;
 	}
 }

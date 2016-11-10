@@ -1,38 +1,43 @@
 package rendering;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import event.Event;
+import event.EventHandler;
+import event.EventManager;
+import event.RenderComponentEvent;
+import util.EConstant;
 
-public class Scene implements Serializable{
+public class Scene extends LinkedList<Shape> implements EventHandler{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8161957444351432644L;
-	private List<Renderable> list;
+	private static final long serialVersionUID = -7882389386746450738L;
+	private EventManager eventManager;
 
-	public Scene() {
-		list = new ArrayList<Renderable>();
-	}
-	
-	public Scene(Scene scene) {
-		list = new ArrayList<Renderable>(scene.getList());
+	public Scene(EventManager eventManager) {
+		super();
+		this.eventManager = eventManager;
+		register();
 	}
 
-	public synchronized void clear() {
-		list.clear();
+	@Override
+	public void register() {
+		eventManager.register(EConstant.RENDER_COMPONENT_EVENT, this);
 	}
 
-	public synchronized void render(Renderable renderable) {
-		list.add(renderable);
+	@Override
+	public void onEvent(Event event) {
+		if (event.getType() == EConstant.RENDER_COMPONENT_EVENT) {
+			add(((RenderComponentEvent) event).getShape());
+		}
 	}
 	
-	public synchronized List<Renderable> getList() {
-		return list;
+	public static int scaleX(double a) {
+		return (int) (a / EConstant.WORLD_WIDTH * EConstant.WINDOW_WIDTH);
 	}
 	
-	public synchronized String toString() {
-		return list.toString();
+	public static int scaleY(double a) {
+		return (int) (a / EConstant.WORLD_HEIGHT * EConstant.WINDOW_HEIGHT);
 	}
 }
