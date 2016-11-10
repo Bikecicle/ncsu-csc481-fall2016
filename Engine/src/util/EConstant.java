@@ -4,6 +4,7 @@ public class EConstant {
 
 	// Networking
 	public static final int PORT = 6666;
+	public static final int ALL_CLIENTS = -1;
 
 	// Objects
 	public static final double PLAYER_WIDTH = 2;
@@ -33,7 +34,8 @@ public class EConstant {
 	public static final int RENDER_ALL_EVENT = 12;
 	public static final int SERVICE_ALL_EVENT = 13;
 	public static final int CONNECTION_LOST_EVENT = 14;
-	public static final int TELEPORT_WORLD_EVENT = 15;
+	public static final int STREAM_WORLD_EVENT = 15;
+	public static final int WORLD_REQUEST_EVENT = 16;
 
 	// Keys
 	public static final int KEY_UP = 38;

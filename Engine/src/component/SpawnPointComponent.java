@@ -6,19 +6,23 @@ import event.ObjectMovedEvent;
 import event.RespawnEvent;
 import util.EConstant;
 
-public class SpawnPointComponent implements Component {
+public class SpawnPointComponent extends Component {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8338102255679833331L;
-	private EventManager eventManager;
 	private WorldPositionComponent position;
 
-	public SpawnPointComponent(EventManager eventManager, WorldPositionComponent position) {
+	public SpawnPointComponent(int id, EventManager eventManager, WorldPositionComponent position) {
+		super(id, eventManager);
 		this.eventManager = eventManager;
 		this.position = position;
+		register();
+	}
 
+	@Override
+	public void register() {
 		eventManager.register(EConstant.RESPAWN_EVENT, this);
 	}
 
@@ -27,10 +31,10 @@ public class SpawnPointComponent implements Component {
 		if (event.getType() == EConstant.RESPAWN_EVENT) {
 			RespawnEvent rEvent = (RespawnEvent) event;
 			if (!rEvent.isSpawned()) {
-				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), rEvent.getHitbox(), position.getX(), position.getY()));
+				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), rEvent.getOid(), position.getX(),
+						position.getY(), rEvent.getWidth(), rEvent.getHeight()));
 				rEvent.setSpawned(true);
 			}
 		}
 	}
-
 }

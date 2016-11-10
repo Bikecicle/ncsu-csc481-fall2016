@@ -1,6 +1,5 @@
 package event;
 
-import component.CollisionBoxComponent;
 import util.EConstant;
 
 public class MomentumTransferEvent extends Event {
@@ -9,18 +8,18 @@ public class MomentumTransferEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 8368896505955127730L;
-	private CollisionBoxComponent hitbox;
+	private int oid;
 	private double velocityX, velocityY;
 
-	public MomentumTransferEvent(long timestamp, CollisionBoxComponent hitbox, double velocityX, double velocityY) {
+	public MomentumTransferEvent(long timestamp, int oid, double velocityX, double velocityY) {
 		super(timestamp, EConstant.MOMENTUM_TRANSFER_EVENT, EConstant.PRIORITY_PHYSICS);
-		this.hitbox = hitbox;
+		this.oid = oid;
 		this.velocityX = velocityX;
 		this.velocityY = velocityY;
 	}
 
-	public CollisionBoxComponent getHitbox() {
-		return hitbox;
+	public int getOid() {
+		return oid;
 	}
 
 	public double getVelocityX() {

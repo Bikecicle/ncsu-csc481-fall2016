@@ -95,4 +95,10 @@ public class EngineClient extends PApplet implements EventHandler{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void register() {
+		// TODO Auto-generated method stub
+		
+	}
 }

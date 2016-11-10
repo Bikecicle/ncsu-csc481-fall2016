@@ -1,8 +1,9 @@
 package component;
 
 import event.Event;
+import event.EventManager;
 
-public class ChaoticMotionComponent implements Component, Driver {
+public class ChaoticMotionComponent extends Component implements Driver {
 
 	/**
 	 * 
@@ -12,9 +13,11 @@ public class ChaoticMotionComponent implements Component, Driver {
 	double t = 0;
 	double a = 10;
 
-	public ChaoticMotionComponent(double x, double y) {
+	public ChaoticMotionComponent(int oid, EventManager eventManager, double x, double y) {
+		super(oid, eventManager);
 		this.x = x;
 		this.y = y;
+		register();
 	}
 
 	@Override
@@ -26,8 +29,12 @@ public class ChaoticMotionComponent implements Component, Driver {
 
 	@Override
 	public void onEvent(Event event) {
-		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void register() {
+		
 	}
 
 }

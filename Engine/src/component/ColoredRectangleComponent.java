@@ -4,30 +4,33 @@ import event.Event;
 import event.EventManager;
 import event.RenderComponentEvent;
 import rendering.ColoredRect;
-import rendering.SceneManager;
+import rendering.Scene;
 import util.EConstant;
 
-public class ColoredRectangleComponent implements Component, Renderable {
+public class ColoredRectangleComponent extends Component implements Renderable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1741938692736049328L;
-	private SceneManager sceneManager;
-	private EventManager eventManager;
+	private Scene scene;
 	private WorldPositionComponent position;
 	private double width;
 	private double height;
 
-	public ColoredRectangleComponent(SceneManager sceneManager, EventManager eventManager,
-			WorldPositionComponent position, double width,
+	public ColoredRectangleComponent(int id, EventManager eventManager, Scene scene, WorldPositionComponent position, double width,
 			double height) {
-		this.sceneManager = sceneManager;
+		super(id, eventManager);
 		this.eventManager = eventManager;
+		this.scene = scene;
 		this.position = position;
 		this.width = width;
 		this.height = height;
-
+		register();
+	}
+	
+	@Override
+	public void register() {
 		eventManager.register(EConstant.RENDER_COMPONENT_EVENT, this);
 		eventManager.register(EConstant.RENDER_ALL_EVENT, this);
 	}
@@ -35,15 +38,15 @@ public class ColoredRectangleComponent implements Component, Renderable {
 	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.RENDER_ALL_EVENT) {
-			eventManager.raise(new RenderComponentEvent(eventManager.getTime(), this));
+			eventManager.raise(new RenderComponentEvent(eventManager.getTime(), this.getOid()));
 		} else if (event.getType() == EConstant.RENDER_COMPONENT_EVENT) {
-			if (((RenderComponentEvent) event).getComponent() == this)
+			if (((RenderComponentEvent) event).getOid() == this.getOid())
 				render();
 		}
 	}
-	
+
 	@Override
 	public void render() {
-		sceneManager.render(new ColoredRect(position.getX(), position.getY(), width, height));
+		scene.render(new ColoredRect(position.getX(), position.getY(), width, height));
 	}
 }

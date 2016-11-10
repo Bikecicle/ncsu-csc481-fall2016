@@ -1,7 +1,5 @@
 package event;
 
-import component.CollisionBoxComponent;
-import component.WorldPositionComponent;
 import util.EConstant;
 
 public class RespawnEvent extends Event {
@@ -10,17 +8,26 @@ public class RespawnEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = -6936436040086450288L;
-	private CollisionBoxComponent hitbox;
+	private int oid;
+	private double width, height;
 	private boolean spawned;
 
-	public RespawnEvent(Long timestamp, CollisionBoxComponent hitbox) {
+	public RespawnEvent(Long timestamp, int oid, double width, double height) {
 		super(timestamp, EConstant.RESPAWN_EVENT, EConstant.PRIORITY_GAME_LOGIC);
-		this.hitbox = hitbox;
+		this.oid = oid;
 		this.spawned = false;
 	}
 	
-	public CollisionBoxComponent getHitbox() {
-		return hitbox;
+	public int getOid() {
+		return oid;
+	}
+	
+	public double getWidth() {
+		return width;
+	}
+	
+	public double getHeight() {
+		return height;
 	}
 	
 	public boolean isSpawned() {

@@ -29,7 +29,6 @@ public class ClientInThread implements Runnable {
 				eventManager.raise(event);
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
 			System.out.println("Connection to server lost");
 			eventManager.raise(new ConnectionLostEvent(eventManager.getTime()));
 		}

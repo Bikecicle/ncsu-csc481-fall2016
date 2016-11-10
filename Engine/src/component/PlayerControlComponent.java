@@ -8,26 +8,22 @@ import event.KeyReleasedEvent;
 import util.EConstant;
 import util.PressedKeyMap;
 
-public class PlayerControlComponent implements Component, Driver {
+public class PlayerControlComponent extends Component implements Driver {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9065247151360359992L;
 	private PressedKeyMap map;
-	private CollisionBoxComponent collisionBoxComponent;
 	private boolean jumping;
 	private int playerId;
 
-	public PlayerControlComponent(EventManager eventManager, CollisionBoxComponent collisionBoxComponent,
-			int playerId) {
+	public PlayerControlComponent(int id, EventManager eventManager, int playerId) {
+		super(id, eventManager);
+		this.eventManager = eventManager;
 		this.map = new PressedKeyMap();
 		this.playerId = playerId;
-		this.collisionBoxComponent = collisionBoxComponent;
-
-		eventManager.register(EConstant.KEY_PRESSED_EVENT, this);
-		eventManager.register(EConstant.KEY_RELEASED_EVENT, this);
-		eventManager.register(EConstant.COLLISION_EVENT, this);
+		register();
 
 		map.release(EConstant.KEY_UP);
 		map.release(EConstant.KEY_DOWN);
@@ -36,14 +32,27 @@ public class PlayerControlComponent implements Component, Driver {
 	}
 
 	@Override
+	public void register() {
+		eventManager.register(EConstant.KEY_PRESSED_EVENT, this);
+		eventManager.register(EConstant.KEY_RELEASED_EVENT, this);
+		eventManager.register(EConstant.COLLISION_EVENT, this);
+	}
+
+	@Override
 	public void onEvent(Event event) {
-		if (event.getType() == EConstant.KEY_PRESSED_EVENT && ((KeyPressedEvent) event).getId() == playerId) {
-			map.press(((KeyPressedEvent) event).getKey());
-		} else if (event.getType() == EConstant.KEY_RELEASED_EVENT && ((KeyReleasedEvent) event).getId() == playerId) {
-			map.release(((KeyReleasedEvent) event).getKey());
-		} else if (event.getType() == EConstant.COLLISION_EVENT
-				&& ((CollisionEvent) event).getHitbox1() == this.collisionBoxComponent) {
-			if (!((CollisionEvent) event).isCollidingFromBelow()) {
+		if (event.getType() == EConstant.KEY_PRESSED_EVENT) {
+			KeyPressedEvent kpEvent = (KeyPressedEvent) event;
+			if (kpEvent.getId() == playerId) {
+				map.press(kpEvent.getKey());
+			}
+		} else if (event.getType() == EConstant.KEY_RELEASED_EVENT) {
+			KeyReleasedEvent krEvent = (KeyReleasedEvent) event;
+			if (krEvent.getId() == playerId) {
+				map.press(krEvent.getKey());
+			}
+		} else if (event.getType() == EConstant.COLLISION_EVENT) {
+			CollisionEvent cEvent = (CollisionEvent) event;
+			if (cEvent.getOid1() == this.getOid() && !cEvent.isCollidingFromBelow()) {
 				jumping = false;
 			}
 		}
@@ -66,5 +75,4 @@ public class PlayerControlComponent implements Component, Driver {
 			}
 		}
 	}
-
 }

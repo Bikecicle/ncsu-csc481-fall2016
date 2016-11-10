@@ -1,6 +1,5 @@
 package event;
 
-import component.CollisionBoxComponent;
 import util.EConstant;
 
 public class CollisionEvent extends Event {
@@ -9,24 +8,28 @@ public class CollisionEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 2609642516976356988L;
-	private CollisionBoxComponent hitbox1, hitbox2;
+	private int oid1, oid2;
 	private double overlapX, overlapY;
+	private boolean solid;
+	private boolean moveable;
 
-	public CollisionEvent(long timestamp, CollisionBoxComponent hitbox1, CollisionBoxComponent hitbox2, double overlapX,
-			double overlapY) {
+	public CollisionEvent(long timestamp, int oid1, int oid2, double overlapX,
+			double overlapY, boolean solid, boolean moveable) {
 		super(timestamp, EConstant.COLLISION_EVENT, EConstant.PRIORITY_PHYSICS);
-		this.hitbox1 = hitbox1;
-		this.hitbox2 = hitbox2;
+		this.oid1 = oid1;
+		this.oid2 = oid2;
 		this.overlapX = overlapX;
 		this.overlapY = overlapY;
+		this.solid = solid;
+		this.moveable = moveable;
 	}
-
-	public CollisionBoxComponent getHitbox1() {
-		return hitbox1;
+	
+	public int getOid1() {
+		return oid1;
 	}
-
-	public CollisionBoxComponent getHitbox2() {
-		return hitbox2;
+	
+	public int getOid2() {
+		return oid2;
 	}
 
 	public double getOverlapX() {
@@ -42,10 +45,10 @@ public class CollisionEvent extends Event {
 	}
 
 	public boolean isSolid() {
-		return hitbox2.isSolid();
+		return solid;
 	}
 
 	public boolean isMoveable() {
-		return hitbox2.isMoveable();
+		return moveable;
 	}
 }

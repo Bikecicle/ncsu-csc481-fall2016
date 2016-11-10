@@ -1,7 +1,5 @@
 package event;
 
-import component.CollisionBoxComponent;
-import component.WorldPositionComponent;
 import util.EConstant;
 
 public class ObjectDamageEvent extends Event {
@@ -10,14 +8,14 @@ public class ObjectDamageEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 7117258340909374019L;
-	private CollisionBoxComponent hitbox;
+	private int oid;
 
-	public ObjectDamageEvent(Long timestamp, CollisionBoxComponent hitbox) {
+	public ObjectDamageEvent(Long timestamp, int oid) {
 		super(timestamp, EConstant.OBJECT_DAMAGE_EVENT, EConstant.PRIORITY_GAME_LOGIC);
-		this.hitbox = hitbox;
+		this.oid = oid;
 	}
 
-	public CollisionBoxComponent getHitbox() {
-		return hitbox;
+	public int getOid() {
+		return oid;
 	}
 }

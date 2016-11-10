@@ -6,19 +6,23 @@ import event.ObjectDamageEvent;
 import event.RespawnEvent;
 import util.EConstant;
 
-public class RespawnComponent implements Component {
+public class RespawnComponent extends Component {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6226201588878691649L;
-	private EventManager eventManager;
 	private CollisionBoxComponent hitbox;
 
-	public RespawnComponent(EventManager eventManager, CollisionBoxComponent hitbox) {
+	public RespawnComponent(int id, EventManager eventManager, CollisionBoxComponent hitbox) {
+		super(id, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
-
+		register();
+	}
+	
+	@Override
+	public void register() {
 		eventManager.register(EConstant.OBJECT_DAMAGE_EVENT, this);
 	}
 
@@ -26,10 +30,9 @@ public class RespawnComponent implements Component {
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.OBJECT_DAMAGE_EVENT) {
 			ObjectDamageEvent odEvent = (ObjectDamageEvent) event;
-			if (odEvent.getHitbox() == hitbox) {
-				eventManager.raise(new RespawnEvent(eventManager.getTime(), hitbox));
+			if (odEvent.getOid() == this.getOid()) {
+				eventManager.raise(new RespawnEvent(eventManager.getTime(), this.getOid(), hitbox.getWidth(), hitbox.getHeight()));
 			}
 		}
 	}
-
 }

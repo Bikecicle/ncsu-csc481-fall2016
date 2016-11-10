@@ -13,16 +13,17 @@ public class ServerOutThread implements Runnable, EventHandler {
 
 	private ObjectOutputStream stream;
 	private ConcurrentLinkedQueue<Event> outgoingEvents;
+	private EventManager eventManager;
 	private int id;
 	private boolean stopped;
 
 	public ServerOutThread(ObjectOutputStream stream, EventManager eventManager, int id) {
 		this.stream = stream;
 		this.outgoingEvents = new ConcurrentLinkedQueue<Event>();
+		this.eventManager = eventManager;
 		this.id = id;
 		this.stopped = false;
-
-		eventManager.register(EConstant.OBJECT_MOVED_EVENT, this);
+		register();
 	}
 
 	@Override
@@ -47,6 +48,12 @@ public class ServerOutThread implements Runnable, EventHandler {
 	@Override
 	public void onEvent(Event event) {
 		outgoingEvents.add(event);
+	}
+
+	@Override
+	public void register() {
+		eventManager.register(EConstant.OBJECT_MOVED_EVENT, this);
+		eventManager.register(EConstant.STREAM_WORLD_EVENT, this);
 	}
 
 }

@@ -29,4 +29,10 @@ public class ClientOutThread implements Runnable, EventHandler {
 		
 	}
 
+	@Override
+	public void register() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -6,19 +6,23 @@ import event.EventManager;
 import event.ObjectDamageEvent;
 import util.EConstant;
 
-public class CollisionDamageComponent implements Component {
+public class CollisionDamageComponent extends Component {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7242958124205217848L;
-	EventManager eventManager;
 	CollisionBoxComponent hitbox;
 
-	public CollisionDamageComponent(EventManager eventManager, CollisionBoxComponent hitbox) {
+	public CollisionDamageComponent(int id, EventManager eventManager, CollisionBoxComponent hitbox) {
+		super(id, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
-
+		register();
+	}
+	
+	@Override
+	public void register() {
 		eventManager.register(EConstant.COLLISION_EVENT, this);
 	}
 
@@ -26,9 +30,9 @@ public class CollisionDamageComponent implements Component {
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.COLLISION_EVENT) {
 			CollisionEvent cEvent = (CollisionEvent) event;
-			if (cEvent.getHitbox2() == hitbox) {
+			if (cEvent.getOid2() == this.getOid()) {
 				eventManager.raise(new ObjectDamageEvent(eventManager.getTime(),
-						cEvent.getHitbox1()));
+						cEvent.getOid1()));
 			}
 		}
 	}

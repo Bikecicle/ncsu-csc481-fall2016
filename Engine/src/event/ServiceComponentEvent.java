@@ -1,6 +1,5 @@
 package event;
 
-import component.Component;
 import util.EConstant;
 
 public class ServiceComponentEvent extends Event {
@@ -9,14 +8,14 @@ public class ServiceComponentEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 7640075409741189083L;
-	Component component;
+	private int oid;
 
-	public ServiceComponentEvent(long timestamp, Component component) {
+	public ServiceComponentEvent(long timestamp, int oid) {
 		super(timestamp, EConstant.SERVICE_COMPONENT_EVENT, EConstant.PRIORITY_MOVEMENT);
-		this.component = component;
+		this.oid = oid;
 	}
 
-	public Component getComponent() {
-		return component;
+	public int getOid() {
+		return oid;
 	}
 }

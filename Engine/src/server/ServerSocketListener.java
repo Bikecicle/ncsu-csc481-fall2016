@@ -9,9 +9,9 @@ import event.ClientDisconnectEvent;
 import event.Event;
 import event.EventHandler;
 import event.EventManager;
-import gameobject.Character;
+import event.WorldRequestEvent;
+import gameobject.GameObjectFactory;
 import gameobject.World;
-import rendering.SceneManager;
 import util.EConstant;
 
 public class ServerSocketListener implements Runnable, EventHandler {
@@ -19,20 +19,20 @@ public class ServerSocketListener implements Runnable, EventHandler {
 	private ConcurrentLinkedQueue<ConnectedClient> clients;
 	private ServerSocket serverSocket = null;
 	private EventManager eventManager;
-	private SceneManager sceneManager;
 	private World world;
+	private GameObjectFactory factory;
 	private int count;
 	private boolean stopped;
-	
-	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager, SceneManager sceneManager, World world) {
+
+	public ServerSocketListener(ConcurrentLinkedQueue<ConnectedClient> clients, EventManager eventManager, World world,
+			GameObjectFactory factory) {
 		this.clients = clients;
 		this.eventManager = eventManager;
-		this.sceneManager = sceneManager;
 		this.world = world;
+		this.factory = factory;
 		this.stopped = false;
 		this.count = 0;
-		
-		eventManager.register(EConstant.CLIENT_DISCONNECT_EVENT, this);
+		register();
 		System.out.println("ServerSocket established on localhost:" + EConstant.PORT);
 	}
 
@@ -51,7 +51,8 @@ public class ServerSocketListener implements Runnable, EventHandler {
 				clients.add(client);
 				System.out.println("New connection established: client " + count);
 				System.out.println("Clients: " + clients.toString());
-				world.buildGameObject(new Character(sceneManager, eventManager, count));
+				world.addGameObject(factory.character(("c" + count), count));
+				eventManager.raise(new WorldRequestEvent(eventManager.getTime(), count));
 			}
 			serverSocket.close();
 		} catch (IOException e) {
@@ -67,7 +68,8 @@ public class ServerSocketListener implements Runnable, EventHandler {
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.CLIENT_DISCONNECT_EVENT) {
 			Iterator<ConnectedClient> it = clients.iterator();
-			ConnectedClient client = it.next();;
+			ConnectedClient client = it.next();
+			;
 			while (it.hasNext() && client.getId() != ((ClientDisconnectEvent) event).getId()) {
 				client = it.next();
 			}
@@ -76,5 +78,10 @@ public class ServerSocketListener implements Runnable, EventHandler {
 			System.out.println("Client " + ((ClientDisconnectEvent) event).getId() + " disconnected");
 			System.out.println("Clients: " + clients.toString());
 		}
+	}
+
+	@Override
+	public void register() {
+		eventManager.register(EConstant.CLIENT_DISCONNECT_EVENT, this);
 	}
 }

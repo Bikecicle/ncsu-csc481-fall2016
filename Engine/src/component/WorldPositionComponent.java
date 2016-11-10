@@ -5,7 +5,7 @@ import event.EventManager;
 import event.ObjectMovedEvent;
 import util.EConstant;
 
-public class WorldPositionComponent implements Component {
+public class WorldPositionComponent extends Component {
 	
 	/**
 	 * 
@@ -13,10 +13,16 @@ public class WorldPositionComponent implements Component {
 	private static final long serialVersionUID = -7248611186555109028L;
 	private double positionX, positionY;
 
-	public WorldPositionComponent(EventManager eventManager, double positionX, double positionY) {
+	public WorldPositionComponent(int id, EventManager eventManager, double positionX, double positionY) {
+		super(id, eventManager);
+		this.eventManager = eventManager;
 		this.positionX = positionX;
 		this.positionY = positionY;
-		
+		register();
+	}
+
+	@Override
+	public void register() {
 		eventManager.register(EConstant.OBJECT_MOVED_EVENT, this);
 	}
 
@@ -24,7 +30,7 @@ public class WorldPositionComponent implements Component {
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.OBJECT_MOVED_EVENT) {
 			ObjectMovedEvent omEvent = (ObjectMovedEvent) event;
-			if (omEvent.getHitbox().getPosition() == this) {
+			if (omEvent.getOid() == this.getOid()) {
 				positionX = omEvent.getPositionX();
 				positionY = omEvent.getPositionY();
 			}
@@ -37,9 +43,5 @@ public class WorldPositionComponent implements Component {
 
 	public double getY() {
 		return positionY;
-	}
-	
-	public String toString() {
-		return "x: " + positionX + " y: " + positionY;
 	}
 }

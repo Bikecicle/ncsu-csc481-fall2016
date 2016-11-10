@@ -1,6 +1,7 @@
 package gameobject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import component.Component;
 import event.Event;
 import event.EventHandler;
 import event.EventManager;
-import event.TeleportWorldEvent;
+import event.StreamWorldEvent;
 import util.EConstant;
 
 public class World implements EventHandler, Serializable {
@@ -16,43 +17,50 @@ public class World implements EventHandler, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -7622794570858148559L;
-	private List<GameObject> worldObjects;
+	private List<Component> worldComponents;
+	private EventManager eventManager;
 
 	public World(EventManager eventManager) {
-		this.worldObjects = new LinkedList<GameObject>();
-
-		eventManager.register(EConstant.TELEPORT_WORLD_EVENT, this);
+		this.worldComponents = new LinkedList<Component>();
+		this.eventManager = eventManager;
+		register();
 	}
 
-	public synchronized void buildGameObject(GameObject gameObject) {
-		worldObjects.add(gameObject);
+	public synchronized void addGameObject(List<Component> gameObject) {
+		worldComponents.addAll(gameObject);
 	}
 
-	public synchronized boolean destroyGameObject(Component component) {
-		for (GameObject object : worldObjects) {
-			if (object.contains(component)) {
-				worldObjects.remove(object);
-				return true;
-			}
+	public synchronized void destroyGameObject(int oid) {
+		for (Component component : worldComponents) {
+			if (component.getOid() == oid)
+				worldComponents.remove(component);
 		}
-		return false;
+	}
+	
+	public synchronized void repopulate( List<Component> newComponents ) {
+		worldComponents = new LinkedList<Component>(newComponents);
+		for (Component component : worldComponents) {
+			component.setEventManager(eventManager);
+		}
 	}
 
-	public synchronized void replace(World world) {
-		worldObjects = new LinkedList<GameObject>(world.getWorldObjects());
-	}
-
-	public List<GameObject> getWorldObjects() {
-		return worldObjects;
+	public List<Component> getWorldComponents() {
+		return worldComponents;
 	}
 
 	@Override
 	public void onEvent(Event event) {
-		if (event.getType() == EConstant.TELEPORT_WORLD_EVENT) {
-			TeleportWorldEvent twEvent = (TeleportWorldEvent) event;
-			if (twEvent.getWorld() != this) {
-				replace(twEvent.getWorld());
+		if (event.getType() == EConstant.WORLD_REQUEST_EVENT) {
+			List<Component> componentStream = new ArrayList<Component>(worldComponents);
+			for (Component component : componentStream) {
+				component.setEventManager(null);
 			}
+			eventManager.raise(new StreamWorldEvent(eventManager.getTime(), componentStream));
 		}
+	}
+
+	@Override
+	public void register() {
+		eventManager.register(EConstant.WORLD_REQUEST_EVENT, this);
 	}
 }
