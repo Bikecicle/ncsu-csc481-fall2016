@@ -75,9 +75,4 @@ public class PlayerControlComponent extends Component implements Driver {
 			}
 		}
 	}
-
-	@Override
-	public Component copy() {
-		return new PlayerControlComponent(playerId, eventManager, playerId);
-	}
 }

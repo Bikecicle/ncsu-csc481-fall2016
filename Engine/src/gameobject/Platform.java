@@ -46,9 +46,9 @@ public class Platform extends GameObject {
 	@Override
 	public List<Component> buildDummy(EventManager eventManager) {
 		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, x, y);
-		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position,
-				width, height);
-		
+		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position, width,
+				height);
+
 		List<Component> gameObject = new LinkedList<Component>();
 		gameObject.add(position);
 		gameObject.add(renderShape);

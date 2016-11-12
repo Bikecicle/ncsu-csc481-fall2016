@@ -34,13 +34,11 @@ public class Replay implements EventHandler {
 	private void view() {
 		System.out.println("Playing replay");
 		replayTime = new SoftTimeline(eventManager.getGameTime(), eventManager.getTime() - start, 1, 1);
-		System.out.println(replayTime.getTime() + " " + start);
 		Iterator<Event> it = log.iterator();
 		Event event = it.next();
 		EngineClient.in.pause();
 		eventManager.clear();
-		// eventManager.raise(new SendWorldEvent(eventManager.getTime(),
-		// initialState, guid, EConstant.ALL_GUIDS));
+		// eventManager.raise(new SendWorldEvent(eventManager.getTime(), initialState, guid, EConstant.ALL_GUIDS));
 		while (replayTime.getTime() < end) {
 			while (event.getTimestamp() > replayTime.getTime()) {
 				// Wait

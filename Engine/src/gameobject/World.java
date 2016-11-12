@@ -1,6 +1,7 @@
 package gameobject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class World implements EventHandler, Serializable {
 			WorldRequestEvent wrEvent = (WorldRequestEvent) event;
 			System.out.println("World requested from " + wrEvent.getSource() + " to " + wrEvent.getTarget());
 			if (wrEvent.getSource() == guid) {
-				eventManager.raise(new SendWorldEvent(eventManager.getTime(), roster, guid, wrEvent.getTarget()));
+				eventManager.raise(new SendWorldEvent(eventManager.getTime(), new ArrayList<GameObject>(roster), guid, wrEvent.getTarget()));
 				System.out.println("Sending world...");
 			}
 		} else if (event.getType() == EConstant.SEND_WORLD_EVENT) {

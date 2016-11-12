@@ -52,9 +52,4 @@ public class WorldPositionComponent extends Component {
 	public void moveY(double r) {
 		positionY += r;
 	}
-
-	@Override
-	public Component copy() {
-		return new WorldPositionComponent(guid, eventManager, positionX, positionY);
-	}
 }

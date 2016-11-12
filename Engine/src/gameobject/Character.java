@@ -13,6 +13,7 @@ import component.ColoredRectangleComponent;
 import component.Component;
 import component.WorldPositionComponent;
 import event.EventManager;
+import event.RespawnEvent;
 import util.EConstant;
 
 public class Character extends GameObject {
@@ -50,6 +51,7 @@ public class Character extends GameObject {
 		gameObject.add(movement);
 		gameObject.add(physics);
 		gameObject.add(respawn);
+		eventManager.raise(new RespawnEvent(eventManager.getTime(), guid, EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT));
 		return gameObject;
 	}
 
@@ -58,7 +60,7 @@ public class Character extends GameObject {
 		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, 50, 50);
 		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position,
 				EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT);
-		
+
 		List<Component> gameObject = new LinkedList<Component>();
 		gameObject.add(position);
 		gameObject.add(renderShape);

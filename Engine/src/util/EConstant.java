@@ -54,11 +54,11 @@ public class EConstant {
 	public static final int KEY_CLOSE_BRACKET = 93;
 
 	// Physics
-	public static final double PLAYER_JUMP_VELOCITY = 50;
+	public static final double PLAYER_JUMP_VELOCITY = 60;
 	public static final double PLAYER_ACCELERATION = 400;
 	public static final double PLAYER_MAX_VELOCITY = 50;
 	public static final double GRAVITY = -100;
-	public static final double COLLISION_ELASTICITY_COEFFICIENT = 0.5;
+	public static final double COLLISION_ELASTICITY_COEFFICIENT = 0.70;
 	public static final double FRICTION_COEFFICIENT = 0.95;
 	public static final double MINIMUM_VELOCITY = 0.01;
 

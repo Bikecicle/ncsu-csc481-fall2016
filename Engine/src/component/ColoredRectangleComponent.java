@@ -38,9 +38,4 @@ public class ColoredRectangleComponent extends Component {
 					new Rectangle(position.getX(), position.getY(), width, height)));
 		}
 	}
-
-	@Override
-	public Component copy() {
-		return new ColoredRectangleComponent(guid, eventManager, position, width, height);
-	}
 }

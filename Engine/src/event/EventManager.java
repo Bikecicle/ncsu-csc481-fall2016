@@ -40,14 +40,16 @@ public class EventManager implements Serializable {
 	}
 
 	public void register(int eventType, EventHandler handler) {
-		List<EventHandler> handlers = registrar.get(eventType);
-		if (handlers == null) {
-			handlers = new LinkedList<EventHandler>();
-			registrar.put(eventType, handlers);
+		synchronized (registrar) {
+			List<EventHandler> handlers = registrar.get(eventType);
+			if (handlers == null) {
+				handlers = new LinkedList<EventHandler>();
+				registrar.put(eventType, handlers);
+			}
+			handlers.add(handler);
 		}
-		handlers.add(handler);
 	}
-	
+
 	public void registerWildcard(EventHandler handler) {
 		for (int i = 2; i < EConstant.TOTAL_EVENT_TYPES; i++) {
 			register(i, handler);
@@ -60,7 +62,7 @@ public class EventManager implements Serializable {
 			eventQueue.notifyAll();
 		}
 	}
-	
+
 	public void clear() {
 		eventQueue.clear();
 	}
@@ -76,7 +78,7 @@ public class EventManager implements Serializable {
 	public long getTime() {
 		return gameTime.getTime();
 	}
-	
+
 	public Timeline getGameTime() {
 		return gameTime;
 	}

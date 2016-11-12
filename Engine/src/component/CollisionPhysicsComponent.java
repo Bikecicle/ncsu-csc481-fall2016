@@ -113,9 +113,4 @@ public class CollisionPhysicsComponent extends Component {
 			}
 		}
 	}
-
-	@Override
-	public Component copy() {
-		return new CollisionPhysicsComponent(guid,  eventManager, movementComponent);
-	}
 }

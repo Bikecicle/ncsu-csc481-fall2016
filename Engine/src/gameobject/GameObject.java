@@ -18,6 +18,10 @@ public abstract class GameObject implements Serializable {
 		this.guid = name.hashCode();
 	}
 	
+	public GameObject(GameObject other) {
+		this.guid = other.guid;
+	}
+	
 	public abstract List<Component> build(EventManager eventManager);
 	
 	public abstract List<Component> buildDummy(EventManager eventManager);

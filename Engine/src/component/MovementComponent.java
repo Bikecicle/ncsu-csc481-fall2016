@@ -3,6 +3,7 @@ package component;
 import event.Event;
 import event.EventManager;
 import event.ObjectMovedEvent;
+import event.RespawnEvent;
 import util.EConstant;
 
 public class MovementComponent extends Component {
@@ -30,6 +31,7 @@ public class MovementComponent extends Component {
 	@Override
 	public void register() {
 		eventManager.register(EConstant.SERVICE_ALL_EVENT, this);
+		eventManager.register(EConstant.RESPAWN_EVENT, this);
 	}
 
 	@Override
@@ -49,6 +51,11 @@ public class MovementComponent extends Component {
 			tempPositionY += velocityY * dt;
 			eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getGuid(), tempPositionX, tempPositionY,
 					hitbox.getWidth(), hitbox.getHeight(), false));
+		} else if (event.getType() == EConstant.RESPAWN_EVENT) {
+			if (((RespawnEvent) event).getGuid() == guid) {
+				velocityX = 0;
+				velocityY = 0;
+			}
 		}
 	}
 
@@ -110,10 +117,5 @@ public class MovementComponent extends Component {
 
 	public void setTempPositionY(double tempPositionY) {
 		this.tempPositionY = tempPositionY;
-	}
-
-	@Override
-	public Component copy() {
-		return new MovementComponent(guid, eventManager, hitbox, drivers);
 	}
 }

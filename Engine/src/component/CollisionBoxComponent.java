@@ -89,10 +89,4 @@ public class CollisionBoxComponent extends Component {
 	public boolean isMoveable() {
 		return moveable;
 	}
-
-
-	@Override
-	public Component copy() {
-		return new CollisionBoxComponent(guid, eventManager, position, width, height, solid, moveable);
-	}
 }

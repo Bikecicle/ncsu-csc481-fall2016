@@ -31,10 +31,4 @@ public class GravityComponent extends Component implements Driver {
 	public void drive(MovementComponent movementComponent) {
 		movementComponent.setVelocityY(movementComponent.getVelocityY() + EConstant.GRAVITY * movementComponent.getDt());
 	}
-
-
-	@Override
-	public Component copy() {
-		return new GravityComponent(guid, eventManager);
-	}
 }

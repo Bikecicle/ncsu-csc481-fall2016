@@ -37,9 +37,4 @@ public class SpawnPointComponent extends Component {
 			}
 		}
 	}
-
-	@Override
-	public Component copy() {
-		return new SpawnPointComponent(guid, eventManager, position);
-	}
 }

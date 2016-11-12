@@ -36,9 +36,4 @@ public class CollisionDamageComponent extends Component {
 			}
 		}
 	}
-
-	@Override
-	public Component copy() {
-		return new CollisionDamageComponent(guid, eventManager, hitbox);
-	}
 }

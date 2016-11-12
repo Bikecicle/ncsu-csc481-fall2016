@@ -36,10 +36,4 @@ public class ChaoticMotionComponent extends Component implements Driver {
 	public void register() {
 		
 	}
-
-	@Override
-	public Component copy() {
-		return new ChaoticMotionComponent(guid, eventManager, x, y);
-	}
-
 }

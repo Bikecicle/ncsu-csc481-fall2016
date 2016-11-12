@@ -35,9 +35,4 @@ public class RespawnComponent extends Component {
 			}
 		}
 	}
-
-	@Override
-	public Component copy() {
-		return new RespawnComponent(guid, eventManager, hitbox);
-	}
 }
