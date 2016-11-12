@@ -15,11 +15,9 @@ public class SoftTimeline extends Timeline {
 	}
 
 	public void setScale(double scale) {
-		System.out.println(getTime());
 		keyframeTime = this.getTime();
 		keyframe = anchor.getTime();
 		this.scale = scale;
-		System.out.println(getTime());
 	}
 
 	public void multiplyScale(double a) {
