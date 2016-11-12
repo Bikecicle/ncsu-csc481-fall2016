@@ -16,9 +16,9 @@ public class ColoredRectangleComponent extends Component {
 	private double width;
 	private double height;
 
-	public ColoredRectangleComponent(int oid, EventManager eventManager, WorldPositionComponent position, double width,
+	public ColoredRectangleComponent(int guid, EventManager eventManager, WorldPositionComponent position, double width,
 			double height) {
-		super(oid, eventManager);
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.position = position;
 		this.width = width;
@@ -41,6 +41,6 @@ public class ColoredRectangleComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new ColoredRectangleComponent(oid, eventManager, position, width, height);
+		return new ColoredRectangleComponent(guid, eventManager, position, width, height);
 	}
 }

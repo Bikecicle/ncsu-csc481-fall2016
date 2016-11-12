@@ -18,8 +18,8 @@ public class PlayerControlComponent extends Component implements Driver {
 	private boolean jumping;
 	private int playerId;
 
-	public PlayerControlComponent(int oid, EventManager eventManager, int playerId) {
-		super(oid, eventManager);
+	public PlayerControlComponent(int guid, EventManager eventManager, int playerId) {
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.map = new PressedKeyMap();
 		this.playerId = playerId;
@@ -52,7 +52,7 @@ public class PlayerControlComponent extends Component implements Driver {
 			}
 		} else if (event.getType() == EConstant.COLLISION_EVENT) {
 			CollisionEvent cEvent = (CollisionEvent) event;
-			if (cEvent.getOid1() == this.getOid() && !cEvent.isCollidingFromBelow()) {
+			if (cEvent.getOid1() == this.getGuid() && !cEvent.isCollidingFromBelow()) {
 				jumping = false;
 			}
 		}

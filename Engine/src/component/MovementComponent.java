@@ -18,8 +18,8 @@ public class MovementComponent extends Component {
 	private long previousTimestamp;
 	private double dt;
 
-	public MovementComponent(int oid, EventManager eventManager, CollisionBoxComponent hitbox, Driver... drivers) {
-		super(oid, eventManager);
+	public MovementComponent(int guid, EventManager eventManager, CollisionBoxComponent hitbox, Driver... drivers) {
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
 		this.drivers = drivers;
@@ -47,7 +47,7 @@ public class MovementComponent extends Component {
 			velocityY += accelerationY * dt;
 			tempPositionX += velocityX * dt;
 			tempPositionY += velocityY * dt;
-			eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getOid(), tempPositionX, tempPositionY,
+			eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getGuid(), tempPositionX, tempPositionY,
 					hitbox.getWidth(), hitbox.getHeight(), false));
 		}
 	}
@@ -114,6 +114,6 @@ public class MovementComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new MovementComponent(oid, eventManager, hitbox, drivers);
+		return new MovementComponent(guid, eventManager, hitbox, drivers);
 	}
 }

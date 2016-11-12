@@ -11,16 +11,16 @@ public abstract class Component implements EventHandler, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4139325457865841201L;
-	protected int oid;
+	protected int guid;
 	protected EventManager eventManager;
 
-	public Component(int oid, EventManager eventManager) {
-		this.oid = oid;
+	public Component(int guid, EventManager eventManager) {
+		this.guid = guid;
 		this.eventManager = eventManager;
 	}
 
-	public int getOid() {
-		return oid;
+	public int getGuid() {
+		return guid;
 	}
 	
 	public EventManager getEventManager() {

@@ -15,6 +15,7 @@ import processing.core.PApplet;
 import rendering.Rectangle;
 import rendering.Scene;
 import rendering.Shape;
+import replay.Replay;
 import time.RealTimeline;
 import time.SoftTimeline;
 import time.Timeline;
@@ -24,14 +25,15 @@ import util.PressedKeyMap;
 public class EngineClient extends PApplet implements EventHandler {
 
 	private static Socket socket;
-	private static ClientInThread in;
-	private static ClientOutThread out;
+	public static ClientInThread in;
+	public static ClientOutThread out;
 	private static RealTimeline realTime;
 	private static SoftTimeline gameTime;
 	private static Timeline loopTime;
 	private static EventManager eventManager;
 	private static World world;
 	private static Scene scene;
+	private static Replay replay;
 	public static int id;
 
 	private static long loopIteration;
@@ -41,11 +43,12 @@ public class EngineClient extends PApplet implements EventHandler {
 	public static void main(String[] args) {
 		try {
 			realTime = new RealTimeline();
-			gameTime = new SoftTimeline(realTime, 1, 1);
-			loopTime = new Timeline(gameTime, EConstant.RENDER_LOOP_DELTA);
+			gameTime = new SoftTimeline(realTime, realTime.getTime(), 1, 1);
+			loopTime = new Timeline(gameTime, gameTime.getTime(), EConstant.RENDER_LOOP_DELTA);
 			eventManager = new EventManager(gameTime);
 			world = new World("client" + id, eventManager);
 			scene = new Scene(eventManager);
+			replay = new Replay("clientReplay" + id, eventManager);
 
 			socket = new Socket("localhost", EConstant.PORT);
 			System.out.println("Successfully connected to localhost:" + EConstant.PORT);
@@ -123,5 +126,9 @@ public class EngineClient extends PApplet implements EventHandler {
 
 	public static World getWorld() {
 		return world;
+	}
+
+	public static Replay getReplay() {
+		return replay;
 	}
 }

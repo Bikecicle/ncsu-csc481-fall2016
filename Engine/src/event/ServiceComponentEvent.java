@@ -8,14 +8,14 @@ public class ServiceComponentEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 7640075409741189083L;
-	private int oid;
+	private int guid;
 
-	public ServiceComponentEvent(long timestamp, int oid) {
+	public ServiceComponentEvent(long timestamp, int guid) {
 		super(timestamp, EConstant.SERVICE_COMPONENT_EVENT, EConstant.PRIORITY_MOVEMENT);
-		this.oid = oid;
+		this.guid = guid;
 	}
 
-	public int getOid() {
-		return oid;
+	public int getGuid() {
+		return guid;
 	}
 }

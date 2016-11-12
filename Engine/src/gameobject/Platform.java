@@ -30,10 +30,10 @@ public class Platform extends GameObject {
 
 	@Override
 	public List<Component> build(EventManager eventManager) {
-		WorldPositionComponent position = new WorldPositionComponent(oid, eventManager, x, y);
-		CollisionBoxComponent hitBox = new CollisionBoxComponent(oid, eventManager, position, width, height, true,
+		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, x, y);
+		CollisionBoxComponent hitBox = new CollisionBoxComponent(guid, eventManager, position, width, height, true,
 				false);
-		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(oid, eventManager, position, width,
+		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position, width,
 				height);
 
 		List<Component> gameObject = new LinkedList<Component>();
@@ -45,8 +45,8 @@ public class Platform extends GameObject {
 
 	@Override
 	public List<Component> buildDummy(EventManager eventManager) {
-		WorldPositionComponent position = new WorldPositionComponent(oid, eventManager, x, y);
-		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(oid, eventManager, position,
+		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, x, y);
+		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position,
 				width, height);
 		
 		List<Component> gameObject = new LinkedList<Component>();

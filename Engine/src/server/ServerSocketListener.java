@@ -50,7 +50,7 @@ public class ServerSocketListener implements Runnable, EventHandler {
 				System.out.println("New connection established: client " + count);
 				System.out.println("Clients: " + clients.toString());
 				world.addGameObject(new Character(("c" + count), count));
-				eventManager.raise(new WorldRequestEvent(eventManager.getTime(), count));
+				eventManager.raise(new WorldRequestEvent(eventManager.getTime(), "server".hashCode(), EConstant.ALL_GUIDS));
 			}
 			serverSocket.close();
 		} catch (IOException e) {

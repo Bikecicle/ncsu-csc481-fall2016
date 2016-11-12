@@ -14,8 +14,8 @@ public class SpawnPointComponent extends Component {
 	private static final long serialVersionUID = 8338102255679833331L;
 	private WorldPositionComponent position;
 
-	public SpawnPointComponent(int oid, EventManager eventManager, WorldPositionComponent position) {
-		super(oid, eventManager);
+	public SpawnPointComponent(int guid, EventManager eventManager, WorldPositionComponent position) {
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.position = position;
 		register();
@@ -31,7 +31,7 @@ public class SpawnPointComponent extends Component {
 		if (event.getType() == EConstant.RESPAWN_EVENT) {
 			RespawnEvent rEvent = (RespawnEvent) event;
 			if (!rEvent.isSpawned()) {
-				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), rEvent.getOid(), position.getX(),
+				eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), rEvent.getGuid(), position.getX(),
 						position.getY(), rEvent.getWidth(), rEvent.getHeight(), true));
 				rEvent.setSpawned(true);
 			}
@@ -40,6 +40,6 @@ public class SpawnPointComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new SpawnPointComponent(oid, eventManager, position);
+		return new SpawnPointComponent(guid, eventManager, position);
 	}
 }

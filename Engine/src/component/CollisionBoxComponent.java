@@ -18,9 +18,9 @@ public class CollisionBoxComponent extends Component {
 	private boolean solid;
 	private boolean moveable;
 
-	public CollisionBoxComponent(int oid, EventManager eventManager, WorldPositionComponent position, double width,
+	public CollisionBoxComponent(int guid, EventManager eventManager, WorldPositionComponent position, double width,
 			double height, boolean solid, boolean moveable) {
-		super(oid, eventManager);
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.position = position;
 		this.width = width;
@@ -41,7 +41,7 @@ public class CollisionBoxComponent extends Component {
 		if (event.getType() == EConstant.OBJECT_MOVED_EVENT) {
 			ObjectMovedEvent omEvent = (ObjectMovedEvent) event;
 
-			if (omEvent.getOid() != this.getOid() && !omEvent.isChain()) {
+			if (omEvent.getGuid() != this.getGuid() && !omEvent.isChain()) {
 				if (position.getX() - width / 2 < omEvent.getPositionX() + omEvent.getWidth() / 2
 						&& omEvent.getPositionX() - omEvent.getWidth() / 2 < position.getX() + width / 2
 						&& position.getY() - height / 2 < omEvent.getPositionY() + omEvent.getHeight() / 2
@@ -64,7 +64,7 @@ public class CollisionBoxComponent extends Component {
 								- (position.getY() + height / 2);
 					}
 					eventManager.raise(
-							new CollisionEvent(eventManager.getTime(), omEvent.getOid(), this.getOid(), overlapX, overlapY, solid, moveable));
+							new CollisionEvent(eventManager.getTime(), omEvent.getGuid(), this.getGuid(), overlapX, overlapY, solid, moveable));
 				}
 			}
 		}
@@ -93,6 +93,6 @@ public class CollisionBoxComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new CollisionBoxComponent(oid, eventManager, position, width, height, solid, moveable);
+		return new CollisionBoxComponent(guid, eventManager, position, width, height, solid, moveable);
 	}
 }

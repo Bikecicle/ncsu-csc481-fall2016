@@ -4,7 +4,7 @@ public class EConstant {
 
 	// Networking
 	public static final int PORT = 6666;
-	public static final int ALL_CLIENTS = -1;
+	public static final int ALL_GUIDS = -1;
 
 	// Objects
 	public static final double PLAYER_WIDTH = 2;
@@ -20,6 +20,7 @@ public class EConstant {
 
 
 	// Event id's
+	public static final int RENDER_ALL_EVENT = 0;
 	public static final int RENDER_COMPONENT_EVENT = 1;
 	public static final int SERVICE_COMPONENT_EVENT = 2;
 	public static final int KEY_PRESSED_EVENT = 3;
@@ -31,11 +32,12 @@ public class EConstant {
 	public static final int RESPAWN_EVENT = 9;
 	public static final int CLIENT_CONNECT_EVENT = 10;
 	public static final int CLIENT_DISCONNECT_EVENT = 11;
-	public static final int RENDER_ALL_EVENT = 12;
 	public static final int SERVICE_ALL_EVENT = 13;
 	public static final int CONNECTION_LOST_EVENT = 14;
-	public static final int STREAM_WORLD_EVENT = 15;
+	public static final int SEND_WORLD_EVENT = 15;
 	public static final int WORLD_REQUEST_EVENT = 16;
+	
+	public static final int TOTAL_EVENT_TYPES = 20;
 	
 	// Shapes
 	public static final int RECTANGLE = 1;
@@ -45,6 +47,11 @@ public class EConstant {
 	public static final int KEY_DOWN = 40;
 	public static final int KEY_LEFT = 37;
 	public static final int KEY_RIGHT = 39;
+	public static final int KEY_MINUS = 45;
+	public static final int KEY_PLUS = 61;
+	public static final int KEY_P = 80;
+	public static final int KEY_OPEN_BRACKET = 91;
+	public static final int KEY_CLOSE_BRACKET = 93;
 
 	// Physics
 	public static final double PLAYER_JUMP_VELOCITY = 50;
@@ -65,5 +72,4 @@ public class EConstant {
 	public static final long GAME_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 120);
 	public static final long RENDER_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 60);
 	public static final int THREAD_POOL_SIZE = 4;
-
 }

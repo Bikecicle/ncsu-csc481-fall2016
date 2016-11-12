@@ -12,10 +12,10 @@ public abstract class GameObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6922091393222647907L;
-	protected int oid;
+	protected int guid;
 	
 	public GameObject(String name) {
-		this.oid = name.hashCode();
+		this.guid = name.hashCode();
 	}
 	
 	public abstract List<Component> build(EventManager eventManager);
@@ -24,7 +24,7 @@ public abstract class GameObject implements Serializable {
 	
 	public abstract boolean hasDummy();
 	
-	public int getOid() {
-		return oid;
+	public int getGuid() {
+		return guid;
 	}
 }

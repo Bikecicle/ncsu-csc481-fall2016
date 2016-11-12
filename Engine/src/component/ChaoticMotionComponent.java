@@ -13,8 +13,8 @@ public class ChaoticMotionComponent extends Component implements Driver {
 	double t = 0;
 	double a = 10;
 
-	public ChaoticMotionComponent(int oid, EventManager eventManager, double x, double y) {
-		super(oid, eventManager);
+	public ChaoticMotionComponent(int guid, EventManager eventManager, double x, double y) {
+		super(guid, eventManager);
 		this.x = x;
 		this.y = y;
 		register();
@@ -39,7 +39,7 @@ public class ChaoticMotionComponent extends Component implements Driver {
 
 	@Override
 	public Component copy() {
-		return new ChaoticMotionComponent(oid, eventManager, x, y);
+		return new ChaoticMotionComponent(guid, eventManager, x, y);
 	}
 
 }

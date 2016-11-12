@@ -13,8 +13,8 @@ public class WorldPositionComponent extends Component {
 	private static final long serialVersionUID = -7248611186555109028L;
 	private double positionX, positionY;
 
-	public WorldPositionComponent(int oid, EventManager eventManager, double positionX, double positionY) {
-		super(oid, eventManager);
+	public WorldPositionComponent(int guid, EventManager eventManager, double positionX, double positionY) {
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.positionX = positionX;
 		this.positionY = positionY;
@@ -30,7 +30,7 @@ public class WorldPositionComponent extends Component {
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.OBJECT_MOVED_EVENT) {
 			ObjectMovedEvent omEvent = (ObjectMovedEvent) event;
-			if (omEvent.getOid() == this.getOid()) {
+			if (omEvent.getGuid() == this.getGuid()) {
 				positionX = omEvent.getPositionX();
 				positionY = omEvent.getPositionY();
 			}
@@ -55,6 +55,6 @@ public class WorldPositionComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new WorldPositionComponent(oid, eventManager, positionX, positionY);
+		return new WorldPositionComponent(guid, eventManager, positionX, positionY);
 	}
 }

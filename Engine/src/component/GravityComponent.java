@@ -11,8 +11,8 @@ public class GravityComponent extends Component implements Driver {
 	 */
 	private static final long serialVersionUID = 2370007356638300795L;
 
-	public GravityComponent(int oid, EventManager eventManager) {
-		super(oid, eventManager);
+	public GravityComponent(int guid, EventManager eventManager) {
+		super(guid, eventManager);
 		register();
 	}
 	
@@ -35,6 +35,6 @@ public class GravityComponent extends Component implements Driver {
 
 	@Override
 	public Component copy() {
-		return new GravityComponent(oid, eventManager);
+		return new GravityComponent(guid, eventManager);
 	}
 }

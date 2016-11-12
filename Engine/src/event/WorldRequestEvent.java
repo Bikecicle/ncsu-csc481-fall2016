@@ -8,14 +8,20 @@ public class WorldRequestEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = 5867478695253959139L;
-	private int clientId;
+	private int source;
+	private int target;
 
-	public WorldRequestEvent(long timestamp, int clientId) {
+	public WorldRequestEvent(long timestamp, int source, int target) {
 		super(timestamp, EConstant.WORLD_REQUEST_EVENT, EConstant.PRIORITY_NETWORKING);
-		this.clientId = clientId;
+		this.source = source;
+		this.target = target;
 	}
 	
-	public int getClientId() {
-		return clientId;
+	public int getSource() {
+		return source;
+	}
+	
+	public int getTarget() {
+		return target;
 	}
 }

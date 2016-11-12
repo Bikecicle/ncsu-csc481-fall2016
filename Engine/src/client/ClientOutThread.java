@@ -58,6 +58,7 @@ public class ClientOutThread implements Runnable, EventHandler {
 	public void register() {
 		eventManager.register(EConstant.KEY_PRESSED_EVENT, this);
 		eventManager.register(EConstant.KEY_RELEASED_EVENT, this);
+		eventManager.register(EConstant.WORLD_REQUEST_EVENT, this);
 	}
 
 }

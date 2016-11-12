@@ -30,16 +30,16 @@ public class Character extends GameObject {
 
 	@Override
 	public List<Component> build(EventManager eventManager) {
-		WorldPositionComponent position = new WorldPositionComponent(oid, eventManager, 50, 50);
-		CollisionBoxComponent hitbox = new CollisionBoxComponent(oid, eventManager, position, EConstant.PLAYER_WIDTH,
+		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, 50, 50);
+		CollisionBoxComponent hitbox = new CollisionBoxComponent(guid, eventManager, position, EConstant.PLAYER_WIDTH,
 				EConstant.PLAYER_HEIGHT, true, true);
-		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(oid, eventManager, position,
+		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position,
 				EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT);
-		PlayerControlComponent input = new PlayerControlComponent(oid, eventManager, playerId);
-		GravityComponent gravity = new GravityComponent(oid, eventManager);
-		MovementComponent movement = new MovementComponent(oid, eventManager, hitbox, gravity, input);
-		CollisionPhysicsComponent physics = new CollisionPhysicsComponent(oid, eventManager, movement);
-		RespawnComponent respawn = new RespawnComponent(oid, eventManager, hitbox);
+		PlayerControlComponent input = new PlayerControlComponent(guid, eventManager, playerId);
+		GravityComponent gravity = new GravityComponent(guid, eventManager);
+		MovementComponent movement = new MovementComponent(guid, eventManager, hitbox, gravity, input);
+		CollisionPhysicsComponent physics = new CollisionPhysicsComponent(guid, eventManager, movement);
+		RespawnComponent respawn = new RespawnComponent(guid, eventManager, hitbox);
 
 		List<Component> gameObject = new LinkedList<Component>();
 		gameObject.add(position);
@@ -55,8 +55,8 @@ public class Character extends GameObject {
 
 	@Override
 	public List<Component> buildDummy(EventManager eventManager) {
-		WorldPositionComponent position = new WorldPositionComponent(oid, eventManager, 50, 50);
-		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(oid, eventManager, position,
+		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, 50, 50);
+		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position,
 				EConstant.PLAYER_WIDTH, EConstant.PLAYER_HEIGHT);
 		
 		List<Component> gameObject = new LinkedList<Component>();

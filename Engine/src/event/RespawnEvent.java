@@ -8,18 +8,18 @@ public class RespawnEvent extends Event {
 	 * 
 	 */
 	private static final long serialVersionUID = -6936436040086450288L;
-	private int oid;
+	private int guid;
 	private double width, height;
 	private boolean spawned;
 
-	public RespawnEvent(Long timestamp, int oid, double width, double height) {
+	public RespawnEvent(Long timestamp, int guid, double width, double height) {
 		super(timestamp, EConstant.RESPAWN_EVENT, EConstant.PRIORITY_GAME_LOGIC);
-		this.oid = oid;
+		this.guid = guid;
 		this.spawned = false;
 	}
 	
-	public int getOid() {
-		return oid;
+	public int getGuid() {
+		return guid;
 	}
 	
 	public double getWidth() {

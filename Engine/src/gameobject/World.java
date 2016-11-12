@@ -8,7 +8,8 @@ import component.Component;
 import event.Event;
 import event.EventHandler;
 import event.EventManager;
-import event.StreamWorldEvent;
+import event.SendWorldEvent;
+import event.WorldRequestEvent;
 import util.EConstant;
 
 public class World implements EventHandler, Serializable {
@@ -19,13 +20,13 @@ public class World implements EventHandler, Serializable {
 	private List<Component> components;
 	private List<GameObject> roster;
 	private EventManager eventManager;
-	private int wid;
+	private int guid;
 
 	public World(String name, EventManager eventManager) {
 		this.components = new LinkedList<Component>();
 		this.roster = new LinkedList<GameObject>();
 		this.eventManager = eventManager;
-		this.wid = name.hashCode();
+		this.guid = name.hashCode();
 		register();
 	}
 
@@ -40,13 +41,13 @@ public class World implements EventHandler, Serializable {
 		roster.add(gameObject);
 	}
 
-	public synchronized void destroyGameObject(int oid) {
+	public synchronized void destroyGameObject(int guid) {
 		for (Component component : components) {
-			if (component.getOid() == oid)
+			if (component.getGuid() == guid)
 				components.remove(component);
 		}
 		for (GameObject object : roster) {
-			if (object.getOid() == oid) {
+			if (object.getGuid() == guid) {
 				roster.remove(object);
 			}
 		}
@@ -64,14 +65,24 @@ public class World implements EventHandler, Serializable {
 	public List<Component> getComponents() {
 		return components;
 	}
+	
+	public int getGuid() {
+		return guid;
+	}
 
 	@Override
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.WORLD_REQUEST_EVENT) {
-			eventManager.raise(new StreamWorldEvent(eventManager.getTime(), roster, wid));
-		} else if (event.getType() == EConstant.STREAM_WORLD_EVENT) {
-			StreamWorldEvent swEvent = (StreamWorldEvent) event;
-			if (swEvent.getWid() != wid) {
+			WorldRequestEvent wrEvent = (WorldRequestEvent) event;
+			System.out.println("World requested from " + wrEvent.getSource() + " to " + wrEvent.getTarget());
+			if (wrEvent.getSource() == guid) {
+				eventManager.raise(new SendWorldEvent(eventManager.getTime(), roster, guid, wrEvent.getTarget()));
+				System.out.println("Sending world...");
+			}
+		} else if (event.getType() == EConstant.SEND_WORLD_EVENT) {
+			SendWorldEvent swEvent = (SendWorldEvent) event;
+			if (swEvent.getTarget() == guid
+					|| (swEvent.getSource() != guid && swEvent.getTarget() == EConstant.ALL_GUIDS)) {
 				bind(swEvent.getRoster());
 			}
 		}
@@ -80,6 +91,6 @@ public class World implements EventHandler, Serializable {
 	@Override
 	public void register() {
 		eventManager.register(EConstant.WORLD_REQUEST_EVENT, this);
-		eventManager.register(EConstant.STREAM_WORLD_EVENT, this);
+		eventManager.register(EConstant.SEND_WORLD_EVENT, this);
 	}
 }

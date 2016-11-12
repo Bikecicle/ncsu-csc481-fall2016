@@ -60,7 +60,7 @@ public class ServerOutThread implements Runnable, EventHandler {
 	@Override
 	public void register() {
 		eventManager.register(EConstant.OBJECT_MOVED_EVENT, this);
-		eventManager.register(EConstant.STREAM_WORLD_EVENT, this);
+		eventManager.register(EConstant.SEND_WORLD_EVENT, this);
 	}
 
 }

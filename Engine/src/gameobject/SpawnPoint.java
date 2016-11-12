@@ -25,8 +25,8 @@ public class SpawnPoint extends GameObject {
 
 	@Override
 	public List<Component> build(EventManager eventManager) {
-		WorldPositionComponent position = new WorldPositionComponent(oid, eventManager, x, y);
-		SpawnPointComponent spawner = new SpawnPointComponent(oid, eventManager, position);
+		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, x, y);
+		SpawnPointComponent spawner = new SpawnPointComponent(guid, eventManager, position);
 
 		List<Component> gameObject = new LinkedList<Component>();
 		gameObject.add(position);

@@ -14,8 +14,8 @@ public class CollisionDamageComponent extends Component {
 	private static final long serialVersionUID = 7242958124205217848L;
 	CollisionBoxComponent hitbox;
 
-	public CollisionDamageComponent(int oid, EventManager eventManager, CollisionBoxComponent hitbox) {
-		super(oid, eventManager);
+	public CollisionDamageComponent(int guid, EventManager eventManager, CollisionBoxComponent hitbox) {
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
 		register();
@@ -30,7 +30,7 @@ public class CollisionDamageComponent extends Component {
 	public void onEvent(Event event) {
 		if (event.getType() == EConstant.COLLISION_EVENT) {
 			CollisionEvent cEvent = (CollisionEvent) event;
-			if (cEvent.getOid2() == this.getOid()) {
+			if (cEvent.getOid2() == this.getGuid()) {
 				eventManager.raise(new ObjectDamageEvent(eventManager.getTime(),
 						cEvent.getOid1()));
 			}
@@ -39,6 +39,6 @@ public class CollisionDamageComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new CollisionDamageComponent(oid, eventManager, hitbox);
+		return new CollisionDamageComponent(guid, eventManager, hitbox);
 	}
 }

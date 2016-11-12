@@ -30,10 +30,10 @@ public class DeathZone extends GameObject {
 
 	@Override
 	public List<Component> build(EventManager eventManager) {
-		WorldPositionComponent position = new WorldPositionComponent(oid, eventManager, x, y);
-		CollisionBoxComponent hitbox = new CollisionBoxComponent(oid, eventManager, position, width, height, false,
+		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, x, y);
+		CollisionBoxComponent hitbox = new CollisionBoxComponent(guid, eventManager, position, width, height, false,
 				false);
-		CollisionDamageComponent hazard = new CollisionDamageComponent(oid, eventManager, hitbox);
+		CollisionDamageComponent hazard = new CollisionDamageComponent(guid, eventManager, hitbox);
 
 		List<Component> gameObject = new LinkedList<Component>();
 		gameObject.add(position);

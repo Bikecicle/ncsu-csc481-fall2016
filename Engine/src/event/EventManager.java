@@ -15,13 +15,13 @@ public class EventManager implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7696820900006657202L;
-	private HashMap<Integer, List<EventHandler>> registeredMap;
+	private HashMap<Integer, List<EventHandler>> registrar;
 	private PriorityQueue<Event> eventQueue;
 	private WorkerThread[] workers;
 	private Timeline gameTime;
 
 	public EventManager(Timeline gameTime) {
-		this.registeredMap = new HashMap<Integer, List<EventHandler>>();
+		this.registrar = new HashMap<Integer, List<EventHandler>>();
 		this.eventQueue = new PriorityQueue<Event>(new Comparator<Event>() {
 			@Override
 			public int compare(Event o1, Event o2) {
@@ -40,12 +40,18 @@ public class EventManager implements Serializable {
 	}
 
 	public void register(int eventType, EventHandler handler) {
-		List<EventHandler> handlers = registeredMap.get(eventType);
+		List<EventHandler> handlers = registrar.get(eventType);
 		if (handlers == null) {
 			handlers = new LinkedList<EventHandler>();
-			registeredMap.put(eventType, handlers);
+			registrar.put(eventType, handlers);
 		}
 		handlers.add(handler);
+	}
+	
+	public void registerWildcard(EventHandler handler) {
+		for (int i = 2; i < EConstant.TOTAL_EVENT_TYPES; i++) {
+			register(i, handler);
+		}
 	}
 
 	public void raise(Event event) {
@@ -54,17 +60,25 @@ public class EventManager implements Serializable {
 			eventQueue.notifyAll();
 		}
 	}
+	
+	public void clear() {
+		eventQueue.clear();
+	}
 
 	public List<EventHandler> getHandlers(Event event) {
-		return registeredMap.get(event.getType());
+		return registrar.get(event.getType());
 	}
 
 	public String toString() {
-		return registeredMap.toString();
+		return registrar.toString();
 	}
 
 	public long getTime() {
 		return gameTime.getTime();
+	}
+	
+	public Timeline getGameTime() {
+		return gameTime;
 	}
 
 	private class WorkerThread extends Thread {
@@ -87,7 +101,7 @@ public class EventManager implements Serializable {
 						event = eventQueue.poll();
 					}
 					// System.out.println("[Worker" + id + "]: " + event);
-					List<EventHandler> handlers = registeredMap.get(event.getType());
+					List<EventHandler> handlers = registrar.get(event.getType());
 					if (handlers != null) {
 						for (EventHandler handler : handlers) {
 							handler.onEvent(event);

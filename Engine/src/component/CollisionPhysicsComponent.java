@@ -15,8 +15,8 @@ public class CollisionPhysicsComponent extends Component {
 	private static final long serialVersionUID = 1550687788305067996L;
 	MovementComponent movementComponent;
 
-	public CollisionPhysicsComponent(int oid, EventManager eventManager, MovementComponent movementComponent) {
-		super(oid, eventManager);
+	public CollisionPhysicsComponent(int guid, EventManager eventManager, MovementComponent movementComponent) {
+		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.movementComponent = movementComponent;
 		register();
@@ -36,7 +36,7 @@ public class CollisionPhysicsComponent extends Component {
 			double overlapY = cEvent.getOverlapY();
 			double positionX = 0;
 			double positionY = 0;
-			if (cEvent.getOid1() == this.getOid()) {
+			if (cEvent.getOid1() == this.getGuid()) {
 				if (cEvent.isSolid()) {
 					// Bounce off
 					if (cEvent.isMoveable()) {
@@ -80,12 +80,12 @@ public class CollisionPhysicsComponent extends Component {
 									.setVelocityX(movementComponent.getVelocityX() * EConstant.FRICTION_COEFFICIENT);
 						}
 					}
-					eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getOid(), positionX, positionY,
+					eventManager.raise(new ObjectMovedEvent(eventManager.getTime(), this.getGuid(), positionX, positionY,
 							movementComponent.getHitbox().getWidth(), movementComponent.getHitbox().getHeight(), true));
 				} else {
 					// Pass through (do nothing)
 				}
-			} else if (cEvent.getOid2() == this.getOid()) {
+			} else if (cEvent.getOid2() == this.getGuid()) {
 				if (cEvent.isMoveable()) {
 					// Energy transfer
 					if (Math.abs(overlapX) < Math.abs(overlapY)) {
@@ -107,7 +107,7 @@ public class CollisionPhysicsComponent extends Component {
 			}
 		} else if (event.getType() == EConstant.MOMENTUM_TRANSFER_EVENT) {
 			MomentumTransferEvent mtEvent = (MomentumTransferEvent) event;
-			if (mtEvent.getOid() == this.getOid()) {
+			if (mtEvent.getGuid() == this.getGuid()) {
 				movementComponent.setVelocityX(movementComponent.getVelocityX() + mtEvent.getVelocityX());
 				movementComponent.setVelocityY(movementComponent.getVelocityY() + mtEvent.getVelocityY());
 			}
@@ -116,6 +116,6 @@ public class CollisionPhysicsComponent extends Component {
 
 	@Override
 	public Component copy() {
-		return new CollisionPhysicsComponent(oid,  eventManager, movementComponent);
+		return new CollisionPhysicsComponent(guid,  eventManager, movementComponent);
 	}
 }
