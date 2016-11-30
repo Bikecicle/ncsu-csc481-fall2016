@@ -13,13 +13,13 @@ public class MovementComponent extends Component {
 	 */
 	private static final long serialVersionUID = 5468157615970061823L;
 	private CollisionBoxComponent hitbox;
-	private Driver[] drivers;
+	private MovementDriver[] drivers;
 	private double velocityX, velocityY, accelerationX, accelerationY = 0;
 	private double tempPositionX, tempPositionY;
 	private long previousTimestamp;
 	private double dt;
 
-	public MovementComponent(int guid, EventManager eventManager, CollisionBoxComponent hitbox, Driver... drivers) {
+	public MovementComponent(int guid, EventManager eventManager, CollisionBoxComponent hitbox, MovementDriver... drivers) {
 		super(guid, eventManager);
 		this.eventManager = eventManager;
 		this.hitbox = hitbox;
@@ -42,7 +42,7 @@ public class MovementComponent extends Component {
 			previousTimestamp = timestamp;
 			tempPositionX = hitbox.getPosition().getX();
 			tempPositionY = hitbox.getPosition().getY();
-			for (Driver driver : drivers) {
+			for (MovementDriver driver : drivers) {
 				driver.drive(this);
 			}
 			velocityX += accelerationX * dt;

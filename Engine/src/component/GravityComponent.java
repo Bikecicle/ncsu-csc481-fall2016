@@ -4,7 +4,7 @@ import event.Event;
 import event.EventManager;
 import util.EConstant;
 
-public class GravityComponent extends Component implements Driver {
+public class GravityComponent extends Component implements MovementDriver {
 	
 	/**
 	 * 

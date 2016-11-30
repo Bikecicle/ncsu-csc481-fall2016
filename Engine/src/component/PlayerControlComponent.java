@@ -8,7 +8,7 @@ import event.KeyReleasedEvent;
 import util.EConstant;
 import util.PressedKeyMap;
 
-public class PlayerControlComponent extends Component implements Driver {
+public class PlayerControlComponent extends Component implements MovementDriver {
 
 	/**
 	 * 

@@ -3,7 +3,7 @@ package component;
 import event.Event;
 import event.EventManager;
 
-public class ChaoticMotionComponent extends Component implements Driver {
+public class ChaoticMotionComponent extends Component implements MovementDriver {
 
 	/**
 	 * 

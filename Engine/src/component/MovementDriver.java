@@ -1,6 +1,6 @@
 package component;
 
-public interface Driver {
+public interface MovementDriver {
 	
 	public void drive( MovementComponent movementComponent );
 
