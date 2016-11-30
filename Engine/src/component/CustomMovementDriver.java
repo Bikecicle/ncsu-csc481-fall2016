@@ -2,6 +2,7 @@ package component;
 
 import event.Event;
 import event.EventManager;
+import scripting.ScriptManager;
 
 public class CustomMovementDriver extends Component implements MovementDriver {
 
@@ -9,10 +10,11 @@ public class CustomMovementDriver extends Component implements MovementDriver {
 	 * 
 	 */
 	private static final long serialVersionUID = -6301334661429358082L;
+	private String driverScript;
 
 	public CustomMovementDriver(int guid, EventManager eventManager, String driverScript) {
 		super(guid, eventManager);
-		// TODO Auto-generated constructor stub
+		this.driverScript = driverScript;
 	}
 
 	@Override
@@ -29,7 +31,8 @@ public class CustomMovementDriver extends Component implements MovementDriver {
 
 	@Override
 	public void drive(MovementComponent movementComponent) {
-		
+		ScriptManager.bindArgument("movement_component", movementComponent);
+		ScriptManager.loadScript("scripts/" + driverScript + ".js");
 	}
 
 }
