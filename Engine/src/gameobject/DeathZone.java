@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import component.CollisionBoxComponent;
-import component.CollisionDamageComponent;
 import component.Component;
+import component.CustomDamageComponent;
 import component.WorldPositionComponent;
 import event.EventManager;
 
@@ -33,7 +33,7 @@ public class DeathZone extends GameObject {
 		WorldPositionComponent position = new WorldPositionComponent(guid, eventManager, x, y);
 		CollisionBoxComponent hitbox = new CollisionBoxComponent(guid, eventManager, position, width, height, false,
 				false);
-		CollisionDamageComponent hazard = new CollisionDamageComponent(guid, eventManager, hitbox);
+		CustomDamageComponent hazard = new CustomDamageComponent(guid, eventManager, "respawn_player.js");
 
 		List<Component> gameObject = new LinkedList<Component>();
 		gameObject.add(position);

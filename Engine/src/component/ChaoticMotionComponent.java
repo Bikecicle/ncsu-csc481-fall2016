@@ -9,9 +9,9 @@ public class ChaoticMotionComponent extends Component implements MovementDriver 
 	 * 
 	 */
 	private static final long serialVersionUID = -5254311684821470068L;
-	double x, y;
-	double t = 0;
-	double a = 10;
+	private double x, y;
+	private double t = 0;
+	private double a = 10;
 
 	public ChaoticMotionComponent(int guid, EventManager eventManager, double x, double y) {
 		super(guid, eventManager);

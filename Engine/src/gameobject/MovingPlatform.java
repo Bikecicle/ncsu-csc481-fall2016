@@ -3,10 +3,10 @@ package gameobject;
 import java.util.LinkedList;
 import java.util.List;
 
-import component.ChaoticMotionComponent;
 import component.CollisionBoxComponent;
 import component.ColoredRectangleComponent;
 import component.Component;
+import component.CustomDriverComponent;
 import component.MovementComponent;
 import component.WorldPositionComponent;
 import event.EventManager;
@@ -37,7 +37,7 @@ public class MovingPlatform extends GameObject {
 				false);
 		ColoredRectangleComponent renderShape = new ColoredRectangleComponent(guid, eventManager, position, width,
 				height);
-		ChaoticMotionComponent chaos = new ChaoticMotionComponent(guid, eventManager, x, y);
+		CustomDriverComponent chaos = new CustomDriverComponent(guid, eventManager, "chaotic_motion.js", x, y);
 		MovementComponent movement = new MovementComponent(guid, eventManager, hitbox, chaos);
 
 		List<Component> gameObject = new LinkedList<Component>();

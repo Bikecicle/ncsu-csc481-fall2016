@@ -1,5 +1,6 @@
 package component;
 
+import event.CollisionEvent;
 import event.Event;
 import event.EventManager;
 import scripting.ScriptManager;
@@ -7,9 +8,16 @@ import util.EConstant;
 
 public class CustomDamageComponent extends Component {
 
-	public CustomDamageComponent(int guid, EventManager eventManager) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1441428099900337773L;
+	private String damageScript;
+	
+	public CustomDamageComponent(int guid, EventManager eventManager, String damageScript) {
 		super(guid, eventManager);
-		// TODO Auto-generated constructor stub
+		this.damageScript = damageScript;
+		register();
 	}
 
 	@Override
@@ -19,9 +27,19 @@ public class CustomDamageComponent extends Component {
 
 	@Override
 	public void onEvent(Event event) {
-		ScriptManager.bindArgument("collision", event);
-		ScriptManager.bindArgument(name, obj);
-		ScriptManager.loadScript("scripts/" + driverScript + ".js");
+		if (event.getType() == EConstant.COLLISION_EVENT) {
+			CollisionEvent cEvent = (CollisionEvent) event;
+			if (cEvent.getOid2() == guid) {
+				System.out.println("death zone hit");
+				ScriptManager.bindArgument("collision", (CollisionEvent) event);
+				ScriptManager.bindArgument("event_manager", eventManager);
+				ScriptManager.bindArgument("this_guid", guid);
+				ScriptManager.bindArgument("other_guid", cEvent.getOid1());
+				ScriptManager.bindArgument("time", eventManager.getTime());
+				ScriptManager.loadScript(EConstant.SCRIPT_HOME + damageScript);
+				ScriptManager.executeScript();
+			}
+		}
 	}
 
 }

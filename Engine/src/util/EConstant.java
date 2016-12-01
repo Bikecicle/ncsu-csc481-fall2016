@@ -72,4 +72,7 @@ public class EConstant {
 	public static final long GAME_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 120);
 	public static final long RENDER_LOOP_DELTA = (long) (NANOSECONDS_IN_SECOND / 60);
 	public static final int THREAD_POOL_SIZE = 4;
+	
+	// Scripting
+	public static final String SCRIPT_HOME = "scripts/";
 }

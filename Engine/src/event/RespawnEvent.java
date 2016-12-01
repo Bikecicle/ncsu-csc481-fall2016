@@ -16,6 +16,7 @@ public class RespawnEvent extends Event {
 		super(timestamp, EConstant.RESPAWN_EVENT, EConstant.PRIORITY_GAME_LOGIC);
 		this.guid = guid;
 		this.spawned = false;
+		System.out.println("respawn event");
 	}
 	
 	public int getGuid() {

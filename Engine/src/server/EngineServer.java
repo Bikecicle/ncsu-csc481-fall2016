@@ -35,12 +35,6 @@ public class EngineServer {
 		this.loopTime = new Timeline(gameTime, gameTime.getTime(), EConstant.GAME_LOOP_DELTA);
 		this.eventManager = new EventManager(gameTime);
 		this.world = new World("server", eventManager);
-		/**
-		 * this.workers = new WorkerThread[EConstant.THREAD_POOL_SIZE]; for (int
-		 * i = 0; i < EConstant.THREAD_POOL_SIZE; i++) { workers[i] = new
-		 * WorkerThread(eventManager, i + 1); (new Thread(workers[i])).start();
-		 * }
-		 */
 		this.clients = new ConcurrentLinkedQueue<ConnectedClient>();
 		this.newConnectionListener = new ServerSocketListener(clients, eventManager, world);
 		new Thread(newConnectionListener).start();
