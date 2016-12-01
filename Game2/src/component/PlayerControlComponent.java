@@ -1,6 +1,5 @@
 package component;
 
-import event.CollisionEvent;
 import event.CreateObjectEvent;
 import event.DestroyObjectEvent;
 import event.Event;
@@ -8,7 +7,6 @@ import event.EventManager;
 import event.KeyPressedEvent;
 import event.KeyReleasedEvent;
 import gameobject.Projectile;
-import gameobject.World;
 import util.EConstant;
 import util.PressedKeyMap;
 
@@ -38,7 +36,6 @@ public class PlayerControlComponent extends Component implements MovementDriver 
 	public void register() {
 		eventManager.register(EConstant.KEY_PRESSED_EVENT, this);
 		eventManager.register(EConstant.KEY_RELEASED_EVENT, this);
-		eventManager.register(EConstant.COLLISION_EVENT, this);
 		eventManager.register(EConstant.DESTROY_OBJECT_EVENT, this);
 	}
 
@@ -54,9 +51,6 @@ public class PlayerControlComponent extends Component implements MovementDriver 
 			if (krEvent.getId() == playerId) {
 				map.release(krEvent.getKey());
 			}
-		} else if (event.getType() == EConstant.COLLISION_EVENT) {
-			CollisionEvent cEvent = (CollisionEvent) event;
-			// death
 		} else if (event.getType() == EConstant.DESTROY_OBJECT_EVENT) {
 			DestroyObjectEvent doEvent = (DestroyObjectEvent) event;
 			if (doEvent.getGuid() == "projectile".hashCode()) {

@@ -4,7 +4,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import event.EventManager;
 import event.ServiceAllEvent;
-import gameobject.DeathZone;
 import gameobject.Invader;
 import gameobject.Platform;
 import gameobject.SpawnPoint;
