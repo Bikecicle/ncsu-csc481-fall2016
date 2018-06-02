@@ -12,3 +12,5 @@ Features:
 - High reusability
 
 The games were still pretty buggy, but they work well enough to demonstrate ability to design and develop a large, complex system.
+
+If you are feeling adventurous you can download and find the games in the /Executables folder.
